@@ -2,13 +2,6 @@
 
 [Acaraga]() is a platform designed to help users easily discover various sports events. From running and cycling to swimming and other activities, Acaraga provides complete information on event schedules, locations, and categories. Users can browse events, mark their interest by joining events, and track which events they plan to attend or have completed through a personal dashboard.
 
-## 🤝 Team
-
-- [Amar ismail khocan](https://github.com/ammarkhocan) (Team Lead, UI/UX Designer, Full Stack Developer)
-- [Akhirudin salasa](https://github.com/salasaa) (Full Stack Developer, Backend Developer)
-- [Endi suwandi](https://github.com/endisuwandii) (Full Stack Developer, Frontend Developer)
-  [Purnomo arif](https://github.com/purnomoarif) (Full Stack Developer, Frontend Developer)
-
 ## Links
 
 - Frontend Web: <https://acaraga.netlify.app>
