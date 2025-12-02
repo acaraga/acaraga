@@ -5,44 +5,54 @@ export default function LayoutMain() {
   const year = new Date().getFullYear();
 
   return (
-    <div className="flex flex-col h-screen">
-      <nav className="flex justify-center p-4">
-        <ul className="flex gap-10 items-center">
-          <li>
-            <Link to="/">
-              <h1 className="font-extrabold">Acaraga</h1>
-            </Link>
-          </li>
-          <li>
-            <Button asChild>
-              <Link to="/">Home</Link>
-            </Button>
-          </li>
-          <li>
-            <Button asChild>
-              <Link to="/event">Event</Link>
-            </Button>
-          </li>
+    <div className="flex flex-col min-h-screen">
+      {/* Navbar */}
+      <nav className="w-full bg-white shadow-sm">
+        <div className="container mx-auto flex items-center justify-between py-4 px-6">
+          {/* Logo */}
+          <Link to="/" className="text-2xl font-extrabold">
+            Acaraga
+          </Link>
 
-          <li>
+          {/* Menu */}
+          <ul className="flex gap-8 font-medium">
+            <li>
+              <Link to="/" className="hover:text-blue-600">
+                Home
+              </Link>
+            </li>
+            <li>
+              <Link to="/event" className="hover:text-blue-600">
+                Event
+              </Link>
+            </li>
+            <li>
+              <Link to="/about" className="hover:text-blue-600">
+                About
+              </Link>
+            </li>
+          </ul>
+
+          {/* Login/Register */}
+          <div className="flex gap-3">
+            <Button asChild variant="outline">
+              <Link to="/login">Login</Link>
+            </Button>
             <Button asChild>
               <Link to="/register">Register</Link>
             </Button>
-          </li>
-          <li>
-            <Button asChild>
-              <Link to="/login">Login</Link>
-            </Button>
-          </li>
-        </ul>
+          </div>
+        </div>
       </nav>
 
-      <div className="flex-1">
+      {/* Page Content */}
+      <main className="flex-1 bg-gray-50">
         <Outlet />
-      </div>
+      </main>
 
-      <footer>
-        <p>&copy; {year} Acaraga</p>
+      {/* Footer */}
+      <footer className="bg-black text-white py-6 text-center">
+        <p>&copy; {year} Acaraga Indonesia. All rights reserved.</p>
       </footer>
     </div>
   );
