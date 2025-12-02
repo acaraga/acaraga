@@ -113,7 +113,3 @@ export default function Home({ loaderData }: Route.ComponentProps) {
     </div>
   );
 }
-
-{
-  /* =================== EVENTS SECTION =================== */
-}
