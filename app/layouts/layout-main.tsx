@@ -9,9 +9,10 @@ export default function LayoutMain() {
       {/* Navbar */}
       <nav className="w-full bg-white shadow-sm">
         <div className="container mx-auto flex items-center justify-between py-4 px-6">
-          {/* Logo */}
-          <Link to="/" className="text-2xl font-extrabold">
-            Acaraga
+          {/* Logo + Text */}
+          <Link to="/" className="flex items-center gap-1">
+            <img src="/assets/logo.svg" alt="Logo" className="h-10 w-auto" />
+            <span className="text-2xl font-extrabold">Acaraga</span>
           </Link>
 
           {/* Menu */}
