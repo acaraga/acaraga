@@ -7,7 +7,7 @@ export default function LayoutMain() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Navbar */}
-      <nav className="w-full bg-white shadow-sm">
+      <nav className="w-full bg-gray-200 shadow-sm">
         <div className="container mx-auto flex items-center justify-between py-4 px-6">
           {/* Logo + Text */}
           <Link to="/" className="flex items-center gap-1">
@@ -35,11 +35,18 @@ export default function LayoutMain() {
           </ul>
 
           {/* Login/Register */}
-          <div className="flex gap-3">
-            <Button asChild variant="outline">
+          <div className="flex gap-3 bg-gray-200">
+            <Button
+              asChild
+              className="bg-gray-300 text-gray-900 hover:bg-gray-300 rounded-md shadow-none border-none"
+              variant="outline"
+            >
               <Link to="/login">Login</Link>
             </Button>
-            <Button asChild>
+            <Button
+              asChild
+              className="bg-blue-600 text-white hover:bg-blue-700 rounded-md"
+            >
               <Link to="/register">Register</Link>
             </Button>
           </div>
