@@ -20,9 +20,9 @@ export default function RegisterRoute({}: Route.ComponentProps) {
       <div className="w-full max-w-md bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
         {/* Header Section */}
         <div className="mb-8">
-          <p className="text-gray-600 text-sm mb-1">Welcome !</p>
+          <p className="text-gray-600 text-sm mb-1">Welcome!</p>
           <h1 className="text-2xl font-bold text-gray-900">
-            Sign up to Acaraga
+            Register new account for Acaraga
           </h1>
         </div>
 
@@ -109,7 +109,7 @@ export default function RegisterRoute({}: Route.ComponentProps) {
         <p className="text-sm text-center text-gray-500 mt-6">
           Already have an Account ?{" "}
           <Link to="/login" className="text-black font-bold hover:underline">
-            Register
+            Login
           </Link>
         </p>
       </div>

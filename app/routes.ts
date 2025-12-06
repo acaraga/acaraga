@@ -6,11 +6,12 @@ import {
 } from "@react-router/dev/routes";
 
 export default [
-  layout("layouts/layout-main.tsx", [index("routes/home.tsx")]),
+  layout("layouts/layout-main.tsx", [
+    index("routes/home.tsx"),
+    route("about", "routes/about.tsx"),
+    route("events", "routes/events.tsx"),
+  ]),
 
-  // Halaman Register (/register)
   route("register", "routes/register.tsx"),
   route("login", "routes/login.tsx"),
-
-  route("about", "routes/about.tsx"),
 ] satisfies RouteConfig;

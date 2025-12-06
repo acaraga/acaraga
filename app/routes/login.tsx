@@ -18,7 +18,6 @@ export default function RegisterRoute({}: Route.ComponentProps) {
     <div className="min-h-screen flex items-center justify-center bg-white p-4 font-sans">
       <div className="w-full max-w-md bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
         <div className="mb-8">
-          <p className="text-gray-700 text-xl mb-5">Welcome !</p>
           <h1 className="text-2xl font-bold text-gray-900">Login</h1>
           <p className="text-sm">Let’s continue with Acaraga</p>
         </div>
@@ -82,7 +81,7 @@ export default function RegisterRoute({}: Route.ComponentProps) {
             type="submit"
             className="w-full h-11 bg-[#1363DF] hover:bg-[#1152ba] text-white font-medium text-base mt-2"
           >
-            Register
+            Login
           </Button>
         </Form>
 

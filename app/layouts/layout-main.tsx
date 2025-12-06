@@ -23,8 +23,8 @@ export default function LayoutMain() {
               </Link>
             </li>
             <li>
-              <Link to="/event" className="hover:text-blue-600">
-                Event
+              <Link to="/events" className="hover:text-blue-600">
+                Events
               </Link>
             </li>
             <li>
