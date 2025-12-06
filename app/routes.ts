@@ -11,4 +11,6 @@ export default [
   // Halaman Register (/register)
   route("register", "routes/register.tsx"),
   route("login", "routes/login.tsx"),
+
+  route("about", "routes/about.tsx"),
 ] satisfies RouteConfig;
