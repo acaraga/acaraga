@@ -1,5 +1,5 @@
 [build]
-command = "bun run build"
+command = "bun install && bun run build"
 publish = "build/client"
 
 [context.production.environment]
