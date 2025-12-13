@@ -2,6 +2,7 @@ import type { Events } from "~/modules/event/type";
 import type { Route } from "./+types/home";
 import { MapPin, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
+import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -79,16 +80,17 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           </a>
         </div>
 
+        {/* Component: Events */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {events.slice(0, 3).map((event) => (
             <Card
               key={event.id}
-              className="overflow-hidden border border-border/60 hover:shadow-sm transition-shadow"
+              className="pt-0 overflow-hidden border border-border/60 hover:shadow-sm transition-shadow"
             >
               <img
                 src={event.imageUrl ?? "No image available"}
                 alt={event.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
               <CardContent className="pt-4 space-y-2">
                 <p className="text-xs text-muted-foreground">
@@ -114,9 +116,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                   Rp {event.registrationFee.toLocaleString("id-ID")}
                 </span>
 
-                <button className="text-xs text-blue-600 border border-blue-600 px-3 py-1 rounded-full hover:bg-blue-600 hover:text-white transition">
+                <Link
+                  to={`/events/${event.slug}`}
+                  className="text-xs text-blue-600 border border-blue-600 px-3 py-1 rounded-full hover:bg-blue-600 hover:text-white transition"
+                >
                   Detail
-                </button>
+                </Link>
               </CardFooter>
             </Card>
           ))}
