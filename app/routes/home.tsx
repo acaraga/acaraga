@@ -1,5 +1,7 @@
 import type { Events } from "~/modules/event/type";
 import type { Route } from "./+types/home";
+import { MapPin, ArrowRight } from "lucide-react";
+import { Card, CardContent, CardFooter } from "~/components/ui/card";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,21 +18,27 @@ export async function clientLoader() {
   return { events };
 }
 
+function formatEventDate(date: string) {
+  return new Date(date).toLocaleDateString("id-ID", {
+    weekday: "short",
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+}
+
 export default function Home({ loaderData }: Route.ComponentProps) {
   const { events } = loaderData;
 
   return (
     <div className="w-full">
-      {/* HERO SECTION */}
-      <section className="max-w-5xl mx-auto px-6 pt-16 flex flex-col md:flex-row items-center md:items-start gap-10">
-        {/* LEFT TEXT */}
-        <div className="text-center flex-1">
+      <section className="max-w-5xl mx-auto px-6 pt-16 flex flex-col md:flex-row items-center gap-10">
+        <div className="text-center md:text-left flex-1">
           <h2 className="text-2xl md:text-4xl font-bold leading-tight">
             Your Sport Experience <br /> Starts Here.
           </h2>
         </div>
 
-        {/* RIGHT IMAGE */}
         <div className="flex justify-center md:justify-end flex-1">
           <img
             src="/assets/hero.svg"
@@ -40,46 +48,77 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </div>
       </section>
 
-      {/* CHOOSE YOUR SPORT */}
-      <section className="max-w-5xl mx-auto px-6 mt-16 text-center">
-        <h3 className="text-xl font-bold mb-6">Choose Your Sport</h3>
+      <section className="max-w-5xl mx-auto px-6 mt-20 text-center">
+        <h3 className="text-xl font-semibold mb-8">Choose Your Sport</h3>
 
-        <div className="grid grid-cols-3 gap-4 justify-center">
+        <div className="flex justify-center gap-6">
           {[
             { name: "Running", icon: "🏃" },
             { name: "Cycling", icon: "🚴" },
             { name: "Swimming", icon: "🏊" },
           ].map((sport) => (
-            <button
+            <div
               key={sport.name}
-              className="border rounded-xl py-3 px-2 flex flex-col items-center hover:bg-gray-100 transition"
+              className="w-24 h-24 border border-border/60 rounded-xl flex flex-col items-center justify-center gap-2 bg-background hover:bg-muted transition-colors"
             >
               <span className="text-2xl">{sport.icon}</span>
-              <span className="mt-1 text-sm">{sport.name}</span>
-            </button>
+              <span className="text-sm font-medium">{sport.name}</span>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* MOST POPULAR EVENTS */}
-      <section className="max-w-5xl mx-auto px-6 mt-20 mb-24">
-        <div className="flex justify-between items-center">
-          <h3 className="text-xl font-bold">Most Popular Events</h3>
+      <section className="max-w-5xl mx-auto px-6 mt-24 mb-24">
+        <div className="flex justify-between items-center mb-8">
+          <h3 className="text-xl font-semibold">Most Popular Events</h3>
+          <a
+            href="/events"
+            className="text-sm text-blue-600 hover:underline flex items-center gap-1"
+          >
+            See All <ArrowRight size={14} />
+          </a>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
-          {events.map((event) => (
-            <div className="border rounded-xl overflow-hidden shadow-sm bg-white">
-              <img className="w-full h-36 object-cover" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {events.slice(0, 3).map((event) => (
+            <Card
+              key={event.id}
+              className="overflow-hidden border border-border/60 hover:shadow-sm transition-shadow"
+            >
+              <img
+                src={event.imageUrl ?? "No image available"}
+                alt={event.name}
+                className="w-full h-full object-cover"
+              />
+              <CardContent className="pt-4 space-y-2">
+                <p className="text-xs text-muted-foreground">
+                  {formatEventDate(event.dateTimeStart)}
+                </p>
 
-              <div className="p-4">
-                <p className="text-sm text-gray-500">{event.location}</p>
+                <h2 className="font-bold text-lg leading-tight line-clamp-2">
+                  {event.name}
+                </h2>
 
-                <div className="mt-3 flex justify-between items-center">
-                  <span className="font-bold"></span>
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <MapPin size={14} />
+                  <span className="truncate">
+                    {event.location
+                      ? `${event.location.name}, ${event.location.city}`
+                      : "-"}
+                  </span>
                 </div>
-              </div>
-            </div>
+              </CardContent>
+
+              <CardFooter className="flex justify-between items-center pt-2">
+                <span className="text-sm font-semibold">
+                  Rp {event.registrationFee.toLocaleString("id-ID")}
+                </span>
+
+                <button className="text-xs text-blue-600 border border-blue-600 px-3 py-1 rounded-full hover:bg-blue-600 hover:text-white transition">
+                  Detail
+                </button>
+              </CardFooter>
+            </Card>
           ))}
         </div>
       </section>
