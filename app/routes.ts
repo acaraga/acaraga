@@ -10,6 +10,7 @@ export default [
     index("routes/home.tsx"),
     route("about", "routes/about.tsx"),
     route("events", "routes/events.tsx"),
+    // TODO: events/:slug
   ]),
 
   route("register", "routes/register.tsx"),

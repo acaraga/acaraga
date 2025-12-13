@@ -1,7 +1,7 @@
-import type { Events } from "~/modules/event/type";
-import type { Route } from "./+types/events";
 import { MapPin } from "lucide-react";
+import type { Route } from "./+types/events";
 
+import type { Events } from "~/modules/event/type";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import {
   Pagination,
@@ -18,6 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "~/components/ui/select";
+import { formatEventDate } from "~/lib/format";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -33,14 +34,6 @@ export async function clientLoader() {
   const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events`);
   const events: Events = await res.json();
   return { events };
-}
-
-function formatEventDate(date: string) {
-  return new Date(date).toLocaleDateString("id-ID", {
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
 }
 
 export default function Events({ loaderData }: Route.ComponentProps) {
@@ -93,6 +86,7 @@ export default function Events({ loaderData }: Route.ComponentProps) {
         </div>
       </section>
 
+      {/* Component: Events */}
       <section className="max-w-5xl mx-auto px-6 mt-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {events.map((event) => (
