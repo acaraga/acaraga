@@ -1,6 +1,9 @@
 [build]
-command = "react-router build"
+command = "bun run build"
 publish = "build/client"
 
+[context.production.environment]
+NODE_VERSION = "22"
+
 [dev]
-command = "react-router dev"
+command = "bun dev"
