@@ -10,10 +10,24 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+// export async function clientLoader() {
+//   const response = await fetch(
+//     `${import.meta.env.VITE_BACKEND_API_URL}/events`
+//   );
+//   const events: Events = await response.json();
+//   return { events };
+// }
+
 export async function clientLoader() {
-  const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_API_URL}/events`
-  );
+  const baseUrl =
+    import.meta.env.VITE_BACKEND_API_URL || "https://acaraga-api.onrender.com";
+
+  const response = await fetch(`${baseUrl}/events`);
+
+  if (!response.ok) {
+    throw new Error("Gagal mengambil data dari server");
+  }
+
   const events: Events = await response.json();
   return { events };
 }
@@ -43,7 +57,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           <img
             src="/assets/hero.svg"
             alt="Hero Image"
-            className="w-[360px] md:w-[480px] h-auto"
+            className="w-360px md:w-480px h-auto"
           />
         </div>
       </section>
