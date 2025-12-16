@@ -1,9 +1,0 @@
-[build]
-command = "bun run build"
-publish = "build/client"
-
-[context.production.environment]
-NODE_VERSION = "22"
-
-[dev]
-command = "bun dev"

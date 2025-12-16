@@ -9,10 +9,10 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-    "@netlify/vite-plugin-react-router": "^2.1.2",
     "@radix-ui/react-label": "^2.1.8",
     "@radix-ui/react-select": "^2.2.6",
     "@radix-ui/react-slot": "^1.2.4",
+    "@react-router/cloudflare": "^7.10.1",
     "@react-router/node": "^7.9.2",
     "@react-router/serve": "^7.9.2",
     "@tailwindcss/cli": "^4.1.17",
