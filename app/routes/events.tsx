@@ -29,8 +29,16 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+// export async function clientLoader() {
+//   const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events`);
+//   const events: Events = await res.json();
+//   return { events };
+// }
+
 export async function clientLoader() {
-  const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events`);
+  const apiBase =
+    import.meta.env.VITE_BACKEND_API_URL || "https://acaraga-api.onrender.com";
+  const res = await fetch(`${apiBase}/events`);
   const events: Events = await res.json();
   return { events };
 }
@@ -45,6 +53,8 @@ function formatEventDate(date: string) {
 
 export default function Events({ loaderData }: Route.ComponentProps) {
   const { events } = loaderData;
+
+  console.log("Data Events:", events);
 
   return (
     <div className="w-full">
