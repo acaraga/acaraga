@@ -10,24 +10,10 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-// export async function clientLoader() {
-//   const response = await fetch(
-//     `${import.meta.env.VITE_BACKEND_API_URL}/events`
-//   );
-//   const events: Events = await response.json();
-//   return { events };
-// }
-
 export async function clientLoader() {
-  const baseUrl =
-    import.meta.env.VITE_BACKEND_API_URL || "https://acaraga-api.onrender.com";
-
-  const response = await fetch(`${baseUrl}/events`);
-
-  if (!response.ok) {
-    throw new Error("Gagal mengambil data dari server");
-  }
-
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_API_URL}/events`
+  );
   const events: Events = await response.json();
   return { events };
 }
