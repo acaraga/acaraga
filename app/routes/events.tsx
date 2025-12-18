@@ -29,12 +29,6 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-// export async function clientLoader() {
-//   const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events`);
-//   const events: Events = await res.json();
-//   return { events };
-// }
-
 export async function clientLoader() {
   const apiBase =
     import.meta.env.VITE_BACKEND_API_URL || "https://acaraga-api.onrender.com";

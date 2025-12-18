@@ -11,10 +11,10 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function clientLoader() {
-  const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_API_URL}/events`
-  );
-  const events: Events = await response.json();
+  const apiBase =
+    import.meta.env.VITE_BACKEND_API_URL || "https://acaraga-api.onrender.com";
+  const res = await fetch(`${apiBase}/events`);
+  const events: Events = await res.json();
   return { events };
 }
 
