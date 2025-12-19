@@ -133,7 +133,6 @@ export default function Events({ loaderData }: Route.ComponentProps) {
                 </div>
               </CardContent>
 
-              {/* FOOTER */}
               <CardFooter className="flex justify-between items-center">
                 <span className="font-semibold text-sm">
                   Rp {event.registrationFee.toLocaleString("id-ID")}
