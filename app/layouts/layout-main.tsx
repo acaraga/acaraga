@@ -11,12 +11,10 @@ export default function LayoutMain() {
       <div className="flex flex-col min-h-screen">
         <Navbar />
 
-        {/* Page Content */}
         <main className="flex-1 bg-white dark:bg-slate-950 transition-colors">
           <Outlet />
         </main>
 
-        {/* Footer */}
         <Footer />
       </div>
     </ThemeProvider>

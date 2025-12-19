@@ -1,13 +1,11 @@
 import { Link } from "react-router";
 import { Button } from "~/components/ui/button";
-import { ModeToggle } from "~/components/mode-toggle"; // Pastikan pathnya benar
+import { ModeToggle } from "~/components/mode-toggle";
 
 export default function Navbar() {
   return (
-    // Menggunakan bg-background dan border-b agar otomatis berubah warna saat dark mode
     <nav className="w-full bg-background border-b shadow-sm sticky top-0 z-50">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
-        {/* Logo */}
         <Link to="/" className="flex items-center gap-2">
           <img src="/assets/logo.svg" alt="Logo" className="h-10 w-auto" />
           <span className="text-2xl font-extrabold tracking-tight">
@@ -15,7 +13,6 @@ export default function Navbar() {
           </span>
         </Link>
 
-        {/* Menu Navigasi - Hidden on mobile jika ingin lebih rapi */}
         <ul className="hidden md:flex gap-8 font-medium">
           <li>
             <Link to="/" className="hover:text-blue-600 transition-colors">
@@ -37,18 +34,11 @@ export default function Navbar() {
           </li>
         </ul>
 
-        {/* Action Area */}
-        <div className="flex items-center gap-4">
-          {/* TOGGLE THEME DI SINI */}
+        <div className="flex items-center">
           <ModeToggle />
           <div className="h-6 w-1px bg-border mx-1 hidden sm:block" />{" "}
-          {/* Separator tipis */}
-          <div className="flex gap-3">
-            <Button
-              asChild
-              className="rounded-md shadow-none"
-              variant="ghost" // Menggunakan ghost agar lebih bersih
-            >
+          <div className="flex gap-2">
+            <Button asChild className="rounded-md shadow-none" variant="ghost">
               <Link to="/login">Login</Link>
             </Button>
             <Button
