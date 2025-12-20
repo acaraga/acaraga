@@ -114,9 +114,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                   Rp {event.registrationFee.toLocaleString("id-ID")}
                 </span>
 
-                <button className="text-xs text-blue-600 border border-blue-600 px-3 py-1 rounded-full hover:bg-blue-600 hover:text-white transition">
+                <a
+                  className="text-xs text-blue-600 border border-blue-600 px-3 py-1 rounded-full hover:bg-blue-600 hover:text-white transition"
+                  href={`/events/${event.slug}`}
+                >
                   Detail
-                </button>
+                </a>
               </CardFooter>
             </Card>
           ))}
