@@ -9,7 +9,7 @@ export default [
   layout("layouts/layout-main.tsx", [
     index("routes/home.tsx"),
     route("/events", "routes/events.tsx"),
-    route("/event/:slug", "routes/events-slug.tsx"),
+    route("/events/:slug", "routes/events-slug.tsx"),
     route("/about", "routes/about.tsx"),
 
     route("/register", "routes/register.tsx"),
