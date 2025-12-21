@@ -21,7 +21,7 @@ import {
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Events | Acaraga" },
+    { title: "Events - Acaraga" },
     {
       name: "description",
       content: "Explore sports events around you with Acaraga",
