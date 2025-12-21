@@ -1,7 +1,10 @@
 import type { Events } from "~/modules/event/type";
 import type { Route } from "./+types/home";
-import { MapPin, ArrowRight } from "lucide-react";
+
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
+import { Link } from "react-router";
+import { ArrowRight, MapPin } from "lucide-react";
+import { formatEventDate } from "~/lib/format";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,15 +19,6 @@ export async function clientLoader() {
   );
   const events: Events = await response.json();
   return { events };
-}
-
-function formatEventDate(date: string) {
-  return new Date(date).toLocaleDateString("id-ID", {
-    weekday: "short",
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
@@ -83,12 +77,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           {events.slice(0, 3).map((event) => (
             <Card
               key={event.id}
-              className="overflow-hidden border border-border/60 hover:shadow-sm transition-shadow"
+              className="pt-0 overflow-hidden border border-border/60 hover:shadow-sm transition-shadow"
             >
               <img
                 src={event.imageUrl ?? "No image available"}
                 alt={event.name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
               <CardContent className="pt-4 space-y-2">
                 <p className="text-xs text-muted-foreground">
@@ -114,9 +108,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
                   Rp {event.registrationFee.toLocaleString("id-ID")}
                 </span>
 
-                <button className="text-xs text-blue-600 border border-blue-600 px-3 py-1 rounded-full hover:bg-blue-600 hover:text-white transition">
+                <Link
+                  to={`/events/${event.id}`}
+                  className="text-xs text-blue-600 border border-blue-600 px-3 py-1 rounded-full hover:bg-blue-600 hover:text-white transition"
+                >
                   Detail
-                </button>
+                </Link>
               </CardFooter>
             </Card>
           ))}
