@@ -6,6 +6,7 @@ import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import type { Route } from "../+types/root";
+import type { RegisterResponse } from "~/modules/user/type";
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: "Register - Acaraga" }];
@@ -127,19 +128,17 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     password: formData.get("password")?.toString(),
   };
 
-  console.log("Register Body:", registerBody);
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_API_URL}/auth/register`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(registerBody),
+    }
+  );
 
-  // const response = await fetch(
-  //   `${import.meta.env.VITE_BACKEND_API_URL}/auth/register`,
-  //   {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(registerBody),
-  //   }
-  // );
-
-  // const registerResponse: RegisterResponse = await response.json();
-  // console.log(registerResponse);
+  const registerResponse: RegisterResponse = await response.json();
+  console.log(registerResponse);
 
   return redirect("/login");
 }
