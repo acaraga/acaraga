@@ -9,11 +9,26 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function clientLoader() {
-  const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_API_URL}/events`
-  );
-  const events: Events = await response.json();
-  return { events };
+  try {
+    const response = await fetch(
+      `${import.meta.env.VITE_BACKEND_API_URL}/events`
+    );
+
+    if (!response.ok) throw new Error("Backend down");
+
+    const events: Events = await response.json();
+    return { events };
+  } catch (err) {
+    console.warn("dummy data");
+
+    return {
+      events: [
+        { id: 1, location: "Jakarta", title: "Dummy Event 1" },
+        { id: 2, location: "Bandung", title: "Dummy Event 2" },
+        { id: 3, location: "Surabaya", title: "Dummy Event 3" },
+      ],
+    };
+  }
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
@@ -25,7 +40,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <section className="max-w-5xl mx-auto px-6 pt-16 flex flex-col md:flex-row items-center md:items-start gap-10">
         {/* LEFT TEXT */}
         <div className="text-center flex-1">
-          <h2 className="text-2xl md:text-4xl font-bold leading-tight">
+          <h2 className="text-2xl md:text-4xl font-bold leading-tight mt-16">
             Your Sport Experience <br /> Starts Here.
           </h2>
         </div>
