@@ -3,7 +3,6 @@ import { ArrowRight } from "lucide-react";
 import EventList from "~/components/event/event-list";
 
 export async function clientLoader() {
-  // Mengambil URL API cadangan dari incoming change agar lebih aman
   const apiBase =
     import.meta.env.VITE_BACKEND_API_URL || "https://acaraga-api.onrender.com";
   const response = await fetch(`${apiBase}/events`);
