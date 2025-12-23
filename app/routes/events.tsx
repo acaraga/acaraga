@@ -16,17 +16,6 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <div className="w-full">
       <section className="max-w-5xl mx-auto px-6 mt-24 mb-24">
-        <div className="flex justify-between items-center mb-8">
-          <h3 className="text-xl font-semibold">Most Popular Events</h3>
-          <a
-            href="/events"
-            className="text-sm text-blue-600 hover:underline flex items-center gap-1"
-          >
-            See All <ArrowRight size={14} />
-          </a>
-        </div>
-
-        {/* Gunakan komponen yang sudah diringkas */}
         <EventList data={events} limit={3} />
       </section>
     </div>

@@ -13,10 +13,10 @@ export async function clientLoader() {
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   const { events } = loaderData || {};
+  console.log("DATA DARI LIVE SERVER:", events);
 
   return (
     <div className="w-full">
-      {/* Bagian Hero yang baru dari server */}
       <section className="max-w-5xl mx-auto px-6 pt-16 flex flex-col md:flex-row items-center gap-10">
         <div className="text-center md:text-left flex-1">
           <h2 className="text-2xl md:text-4xl font-bold leading-tight">
@@ -33,7 +33,6 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </div>
       </section>
 
-      {/* Bagian Sport Category yang baru dari server */}
       <section className="max-w-5xl mx-auto px-6 mt-20 text-center">
         <h3 className="text-xl font-semibold mb-8">Choose Your Sport</h3>
 
@@ -54,7 +53,6 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </div>
       </section>
 
-      {/* Bagian Popular Events yang sudah diringkas menggunakan EventList */}
       <section className="max-w-5xl mx-auto px-6 mt-24 mb-24">
         <div className="flex justify-between items-center mb-8">
           <h3 className="text-xl font-semibold">Most Popular Events</h3>
@@ -66,7 +64,6 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           </a>
         </div>
 
-        {/* Menggunakan komponen EventList yang baru kamu buat */}
         <EventList data={events} limit={3} />
       </section>
     </div>
