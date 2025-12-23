@@ -4,11 +4,13 @@ export type Event = {
   name: string;
   imageUrl: string | null;
   description: string;
-  location: Location | null;
   dateTimeStart: string;
   dateTimeEnd: string;
   registrationUrl: string;
   registrationFee: number;
+
+  category: Category | null;
+  location: Location | null;
 };
 
 export type Location = {
@@ -20,6 +22,12 @@ export type Location = {
   province: string;
   latitude: number | null;
   longitude: number | null;
+};
+
+export type Category = {
+  id: string;
+  slug: string;
+  name: string;
 };
 
 export type Events = Event[];

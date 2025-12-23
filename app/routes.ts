@@ -10,6 +10,8 @@ export default [
     index("routes/home.tsx"),
     route("about", "routes/about.tsx"),
     route("events", "routes/events.tsx"),
+
+    route("events/:slug", "routes/events-slug.tsx"),
     route("register", "routes/register.tsx"),
     route("login", "routes/login.tsx"),
   ]),
