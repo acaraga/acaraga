@@ -1,6 +1,15 @@
 import type { Route } from "./+types/home";
-import { ArrowRight } from "lucide-react";
 import EventList from "~/components/event/event-list";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Event - Acaraga" },
+    {
+      name: "description",
+      content: "Explore and join events with Acaraga.",
+    },
+  ];
+}
 
 export async function clientLoader() {
   const apiBase =

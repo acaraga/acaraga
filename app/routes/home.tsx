@@ -2,6 +2,16 @@ import type { Route } from "./+types/home";
 import { ArrowRight } from "lucide-react";
 import EventList from "~/components/event/event-list";
 
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Acaraga" },
+    {
+      name: "description",
+      content: "Discover and track events easily with Acaraga.",
+    },
+  ];
+}
+
 export async function clientLoader() {
   const apiBase =
     import.meta.env.VITE_BACKEND_API_URL || "https://acaraga-api.onrender.com";
