@@ -139,10 +139,6 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
                 Join Event
               </Button>
 
-              <p className="text-center text-xs text-muted-foreground">
-                Secure & Verified Payments
-              </p>
-
               <div className="border-t pt-4">
                 <p className="mb-3 text-center text-sm font-medium">
                   Share this event
