@@ -1,7 +1,7 @@
 import { MapPin } from "lucide-react";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import type { Event } from "~/modules/event/type";
-import { formatEventDate } from "~/lib/format";
+import { formatEventDate, formatPrice } from "~/lib/format";
 
 interface EventListProps {
   event: Event;
@@ -37,7 +37,7 @@ export function EventList({ event }: EventListProps) {
 
       <CardFooter className="flex justify-between items-center pt-2">
         <span className="text-sm font-semibold">
-          Rp {event.registrationFee.toLocaleString("id-ID")}
+          {formatPrice(event.registrationFee)}
         </span>
 
         <a
