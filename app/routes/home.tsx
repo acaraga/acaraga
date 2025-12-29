@@ -2,6 +2,7 @@ import type { Route } from "./+types/home";
 import { ArrowRight } from "lucide-react";
 import type { Events } from "~/modules/event/type";
 import { EventList } from "~/components/event/event-list";
+import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -69,12 +70,12 @@ export default function Home({ loaderData }: Route.ComponentProps) {
       <section className="max-w-5xl mx-auto px-6 mt-24 mb-24">
         <div className="flex justify-between items-center mb-8">
           <h3 className="text-xl font-semibold">Most Popular Events</h3>
-          <a
-            href="/events"
+          <Link
+            to="/events"
             className="text-sm text-blue-600 hover:underline flex items-center gap-1"
           >
             See All <ArrowRight size={14} />
-          </a>
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
