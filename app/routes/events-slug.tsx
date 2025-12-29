@@ -7,12 +7,14 @@ import { Button } from "~/components/ui/button";
 import { CalendarIcon, MapPinIcon, TagIcon } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
 
-export function meta({}: Route.MetaArgs) {
+import { formatEventDate, formatPrice } from "~/lib/format";
+
+export function meta({ loaderData }: Route.MetaArgs) {
   return [
-    { title: "Event Details - Acaraga" },
+    { title: `${loaderData.event.name}  - Acaraga` },
     {
       name: "description",
-      content: "Event Description.",
+      content: loaderData.event.description,
     },
   ];
 }
@@ -31,23 +33,6 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
   const event: Event = await response.json();
   return { event };
-}
-
-function formatDate(date: string) {
-  return new Date(date).toLocaleDateString("id-ID", {
-    weekday: "long",
-    day: "2-digit",
-    month: "long",
-    year: "numeric",
-  });
-}
-
-function formatRupiah(amount: number) {
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-  }).format(amount);
 }
 
 export default function EventDetail({ loaderData }: Route.ComponentProps) {
@@ -72,11 +57,9 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
         <div className="space-y-8 lg:col-span-2">
           <div className="overflow-hidden rounded-xl">
             <img
-              src={
-                event.imageUrl ?? "https://placehold.co/800x400?text=No+Image"
-              }
+              src={event.imageUrl ?? undefined}
               alt={event.name}
-              className="w-full h-auto max-h-[500px] object-cover rounded-xl"
+              className="w-full h-320px object-cover rounded-xl"
             />
           </div>
 
@@ -86,23 +69,19 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
             <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <CalendarIcon className="h-4 w-4" />
-                <span>{formatDate(event.dateTimeStart)}</span>
+                <span>{formatEventDate(event.dateTimeStart)}</span>
               </div>
 
               <div className="flex items-center gap-2">
                 <MapPinIcon className="h-4 w-4" />
-
-                <span>{locationDisplay}</span>
+                <span>
+                  {event.location?.name}, {event.location?.city}
+                </span>
               </div>
 
               <div className="flex items-center gap-2">
                 <TagIcon className="h-4 w-4" />
-
-                <span>
-                  {typeof event.category === "object"
-                    ? event.category?.name
-                    : event.categorySlug || "Event"}
-                </span>
+                <span>{event.category?.name}</span>
               </div>
             </div>
           </div>
@@ -110,7 +89,7 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
           <Card>
             <CardContent className="space-y-3 p-6">
               <h2 className="text-lg font-semibold">Tentang Event</h2>
-              <p className="leading-relaxed text-muted-foreground whitespace-pre-line">
+              <p className="leading-relaxed text-muted-foreground">
                 {event.description}
               </p>
             </CardContent>
@@ -119,11 +98,10 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
           <Card>
             <CardContent className="p-6 space-y-3">
               <h2 className="font-semibold text-lg">Rute & Lokasi</h2>
-              {/* Pake variable aman */}
-              <p className="text-sm">{addressDisplay}</p>
+              <p className="text-sm">{event.location?.address}</p>
 
-              <div className="h-55 rounded-md border flex items-center justify-center text-sm bg-muted/20">
-                Peta Google Maps (Placeholder)
+              <div className="h-55 rounded-md border flex items-center justify-center text-sm">
+                Peta Google Maps
               </div>
             </CardContent>
           </Card>
@@ -137,7 +115,7 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
                   Registration Fee
                 </p>
                 <p className="text-3xl font-bold">
-                  {formatRupiah(event.registrationFee)}
+                  {formatPrice(event.registrationFee)}
                 </p>
               </div>
 
@@ -174,18 +152,23 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
                   <a
                     href="#"
                     className="rounded-full border p-2 transition hover:bg-muted"
+                    aria-label="Share on WhatsApp"
                   >
                     <FaWhatsapp className="text-xl" />
                   </a>
+
                   <a
                     href="#"
                     className="rounded-full border p-2 transition hover:bg-muted"
+                    aria-label="Share on Instagram"
                   >
                     <FaInstagram className="text-xl" />
                   </a>
+
                   <a
                     href="#"
                     className="rounded-full border p-2 transition hover:bg-muted"
+                    aria-label="Share on Facebook"
                   >
                     <FaFacebook className="text-xl" />
                   </a>
