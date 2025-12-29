@@ -38,19 +38,6 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 export default function EventDetail({ loaderData }: Route.ComponentProps) {
   const { event } = loaderData;
 
-  let locationDisplay = "Unknown Location";
-  let addressDisplay = "Alamat tidak tersedia";
-
-  if (event.location) {
-    if (typeof event.location === "string") {
-      locationDisplay = event.location;
-      addressDisplay = event.location;
-    } else if (typeof event.location === "object") {
-      locationDisplay = `${event.location.name || ""}, ${event.location.city || ""}`;
-      addressDisplay = event.location.address || "Detail alamat tidak tersedia";
-    }
-  }
-
   return (
     <section className="mx-auto max-w-7xl px-6 py-10 sm:py-12">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
