@@ -1,6 +1,7 @@
 import type { Route } from "./+types/home";
 import { ArrowRight } from "lucide-react";
-import EventList from "~/components/event/event-list";
+import type { Events } from "~/modules/event/type";
+import { EventList } from "~/components/event/event-list";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,13 +17,16 @@ export async function clientLoader() {
   const apiBase =
     import.meta.env.VITE_BACKEND_API_URL || "https://acaraga-api.onrender.com";
   const response = await fetch(`${apiBase}/events`);
-  const events = await response.json();
+  const events: Events = await response.json();
   return { events };
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
   const { events } = loaderData || {};
   console.log("DATA DARI LIVE SERVER:", events);
+
+  // Ambil 3 event pertama untuk ditampilkan
+  const featuredEvents = events?.slice(0, 3) || [];
 
   return (
     <div className="w-full">
@@ -73,7 +77,11 @@ export default function Home({ loaderData }: Route.ComponentProps) {
           </a>
         </div>
 
-        <EventList data={events} limit={3} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+          {featuredEvents.map((event) => (
+            <EventList key={event.id} event={event} />
+          ))}
+        </div>
       </section>
     </div>
   );
