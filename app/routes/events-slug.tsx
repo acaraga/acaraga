@@ -21,11 +21,9 @@ export function meta({ loaderData }: Route.MetaArgs) {
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const slug = params.slug;
-
-  const apiBase =
-    import.meta.env.VITE_BACKEND_API_URL || "https://acaraga-api.onrender.com";
-
-  const response = await fetch(`${apiBase}/events/${slug}`);
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_API_URL}/events/${slug}`
+  );
 
   if (!response.ok) {
     throw new Response("Event not found", { status: 404 });
