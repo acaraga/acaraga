@@ -1,17 +1,27 @@
+import Cookies from "js-cookie";
+
 import { useState } from "react";
 import { Form, Link } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
-
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import type { Route } from "../+types/root";
+
+import type { Route } from "./+types/login";
+import type { LoginResponse } from "~/modules/user/type";
+import { redirect } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: "Login - Acaraga" }];
+  return [
+    { title: "Login - Acaraga" },
+    {
+      name: "description",
+      content: "Login to your account for Acara Olahraga web",
+    },
+  ];
 }
 
-export default function RegisterRoute({}: Route.ComponentProps) {
+export default function LoginRoute({}: Route.ComponentProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -23,20 +33,6 @@ export default function RegisterRoute({}: Route.ComponentProps) {
         </div>
 
         <Form method="POST" className="space-y-5">
-          {/* Username */}
-          <div className="space-y-2">
-            <Label htmlFor="username" className="text-gray-700">
-              User name
-            </Label>
-            <Input
-              id="username"
-              type="text"
-              name="username"
-              placeholder="Enter your user name"
-              className="h-11 bg-white border-gray-300 placeholder:text-gray-300 focus-visible:ring-blue-500"
-            />
-          </div>
-
           {/* Email */}
           <div className="space-y-2">
             <Label htmlFor="email" className="text-gray-700">
@@ -94,4 +90,33 @@ export default function RegisterRoute({}: Route.ComponentProps) {
       </div>
     </div>
   );
+}
+
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const formData = await request.formData();
+
+  const loginBody = {
+    email: formData.get("email")?.toString(),
+
+    password: formData.get("password")?.toString(),
+  };
+
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_API_URL}/auth/login`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginBody),
+    }
+  );
+
+  const loginResponse: LoginResponse = await response.text();
+
+  console.log(loginResponse);
+
+  Cookies.set("token", loginResponse);
+
+  return redirect("/dashboard");
 }

@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Form, Link, redirect } from "react-router"; // Menggunakan Link untuk navigasi ke Login
-import { Eye, EyeOff } from "lucide-react"; // Import ikon mata
-
+import { Form, Link, redirect } from "react-router";
+import { Eye, EyeOff } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
-import type { Route } from "../+types/root";
+
+import type { Route } from "./+types/register";
 import type { RegisterResponse } from "~/modules/user/type";
 
 export function meta({}: Route.MetaArgs) {
