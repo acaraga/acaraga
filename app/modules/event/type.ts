@@ -9,7 +9,7 @@ export type Event = {
   registrationUrl: string;
   registrationFee: number;
 
-  category: Category | null;
+  category?: Category;
   location: Location | null;
 };
 

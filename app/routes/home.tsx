@@ -1,7 +1,7 @@
 import type { Route } from "./+types/home";
 import { ArrowRight } from "lucide-react";
 import type { Events } from "~/modules/event/type";
-import { EventList } from "~/components/event/event-list";
+import { EventList } from "~/modules/event/event-list";
 import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {

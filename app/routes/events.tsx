@@ -1,7 +1,7 @@
 import type { Events } from "~/modules/event/type";
 import type { Route } from "./+types/events";
 
-import { EventList } from "~/components/event/event-list";
+import { EventList } from "~/modules/event/event-list";
 import {
   Pagination,
   PaginationContent,

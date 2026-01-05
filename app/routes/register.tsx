@@ -1,18 +1,24 @@
 import { useState } from "react";
-import { Form, Link } from "react-router"; // Menggunakan Link untuk navigasi ke Login
+import { Form, Link, redirect } from "react-router"; // Menggunakan Link untuk navigasi ke Login
 import { Eye, EyeOff } from "lucide-react"; // Import ikon mata
 
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import type { Route } from "../+types/root";
+import type { RegisterResponse } from "~/modules/user/type";
 
 export function meta({}: Route.MetaArgs) {
-  return [{ title: "Register - Acaraga" }];
+  return [
+    { title: "Register - Acaraga" },
+    {
+      name: "description",
+      content: "Register new account for Acara Olahraga web",
+    },
+  ];
 }
 
 export default function RegisterRoute({}: Route.ComponentProps) {
-  // State untuk mengatur visibilitas password
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -77,10 +83,10 @@ export default function RegisterRoute({}: Route.ComponentProps) {
             <div className="relative">
               <Input
                 id="password"
-                type={showPassword ? "text" : "password"} // Ubah tipe input berdasarkan state
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter your Password"
-                className="h-11 bg-white border-gray-300 placeholder:text-gray-300 focus-visible:ring-blue-500 pr-10" // pr-10 memberi ruang untuk ikon
+                className="h-11 bg-white border-gray-300 placeholder:text-gray-300 focus-visible:ring-blue-500 pr-10"
               />
               <button
                 type="button"
@@ -115,4 +121,32 @@ export default function RegisterRoute({}: Route.ComponentProps) {
       </div>
     </div>
   );
+}
+
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const formData = await request.formData();
+
+  const registerBody = {
+    username: formData.get("username")?.toString(),
+    email: formData.get("email")?.toString(),
+    fullName: formData.get("fullName")?.toString(),
+    password: formData.get("password")?.toString(),
+  };
+
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_API_URL}/auth/register`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(registerBody),
+    }
+  );
+
+  const registerResponse: RegisterResponse = await response.json();
+
+  console.log(registerResponse);
+
+  return redirect("/login");
 }
