@@ -18,37 +18,19 @@ export default function Navbar() {
         <div className="hidden md:flex items-center gap-10">
           <ul className="flex h-9 items-center gap-8 font-medium">
             <li>
-              <Link
-                to="/"
-                className="text-muted-foreground hover:text-blue-600 transition-colors"
-              >
-                Home
-              </Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link
-                to="/events"
-                className="text-muted-foreground hover:text-blue-600 transition-colors"
-              >
-                Events
-              </Link>
+              <Link to="/events">Events</Link>
             </li>
             <li>
-              <Link
-                to="/about"
-                className="text-muted-foreground hover:text-blue-600 transition-colors"
-              >
-                About
-              </Link>
+              <Link to="/about">About</Link>
             </li>
           </ul>
 
           <div className="relative w-260px">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input
-              placeholder="Search events..."
-              className="h-9 pl-9 focus-visible:ring-1 focus-visible:ring-blue-600"
-            />
+            <Input placeholder="Search events..." />
           </div>
         </div>
 
@@ -61,10 +43,7 @@ export default function Navbar() {
             <Link to="/login">Login</Link>
           </Button>
 
-          <Button
-            asChild
-            className="h-9 bg-blue-600 px-4 text-white hover:bg-blue-700"
-          >
+          <Button asChild>
             <Link to="/register">Register</Link>
           </Button>
         </div>

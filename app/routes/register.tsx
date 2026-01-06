@@ -38,7 +38,6 @@ export default function RegisterRoute({}: Route.ComponentProps) {
               type="text"
               name="username"
               placeholder="Enter your user name"
-              className="h-11 bg-white border-gray-300 placeholder:text-gray-300 focus-visible:ring-blue-500"
             />
           </div>
 
@@ -52,7 +51,6 @@ export default function RegisterRoute({}: Route.ComponentProps) {
               type="email"
               name="email"
               placeholder="Enter your email"
-              className="h-11 bg-white border-gray-300 placeholder:text-gray-300 focus-visible:ring-blue-500"
             />
           </div>
 
@@ -66,7 +64,6 @@ export default function RegisterRoute({}: Route.ComponentProps) {
               type="text"
               name="fullName"
               placeholder="Enter your Full Name"
-              className="h-11 bg-white border-gray-300 placeholder:text-gray-300 focus-visible:ring-blue-500"
             />
           </div>
 
@@ -81,7 +78,6 @@ export default function RegisterRoute({}: Route.ComponentProps) {
                 type={showPassword ? "text" : "password"} // Ubah tipe input berdasarkan state
                 name="password"
                 placeholder="Enter your Password"
-                className="h-11 bg-white border-gray-300 placeholder:text-gray-300 focus-visible:ring-blue-500 pr-10" // pr-10 memberi ruang untuk ikon
               />
               <button
                 type="button"
@@ -98,12 +94,7 @@ export default function RegisterRoute({}: Route.ComponentProps) {
           </div>
 
           {/* Button */}
-          <Button
-            type="submit"
-            className="w-full h-11 bg-[#1363DF] hover:bg-[#1152ba] text-white font-medium text-base mt-2"
-          >
-            Register
-          </Button>
+          <Button type="submit">Register</Button>
         </Form>
 
         {/* Footer */}
