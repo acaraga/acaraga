@@ -1,17 +1,20 @@
+import Cookies from "js-cookie";
+
 import { useState } from "react";
-import { Form, Link } from "react-router";
+import { Form, Link, redirect } from "react-router";
 import { Eye, EyeOff } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import type { Route } from "../+types/root";
+import type { LoginResponse } from "~/modules/user/type";
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: "Login - Acaraga" }];
 }
 
-export default function RegisterRoute({}: Route.ComponentProps) {
+export default function LoginRoute({}: Route.ComponentProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -19,7 +22,7 @@ export default function RegisterRoute({}: Route.ComponentProps) {
       <div className="w-full max-w-md bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
         <div className="mb-8">
           <h1 className="text-2xl font-bold text-gray-900">Login</h1>
-          <p className="text-sm">Let’s continue with Acaraga</p>
+          <p className="text-sm">Let's continue with Acaraga</p>
         </div>
 
         <Form method="POST" className="space-y-5">
@@ -86,7 +89,7 @@ export default function RegisterRoute({}: Route.ComponentProps) {
         </Form>
 
         <p className="text-sm text-center text-gray-500 mt-6">
-          Already have an Account ?{" "}
+          Don't have an account?{" "}
           <Link to="/register" className="text-black font-bold hover:underline">
             Register
           </Link>
@@ -94,4 +97,29 @@ export default function RegisterRoute({}: Route.ComponentProps) {
       </div>
     </div>
   );
+}
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const formData = await request.formData();
+
+  const loginBody = {
+    email: formData.get("email")?.toString(),
+
+    password: formData.get("password")?.toString(),
+  };
+
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_API_URL}/auth/login`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(loginBody),
+    }
+  );
+
+  const loginResponse: LoginResponse = await response.text();
+  console.log(loginResponse);
+
+  Cookies.set("token", loginResponse);
+
+  return redirect("/dashboard");
 }

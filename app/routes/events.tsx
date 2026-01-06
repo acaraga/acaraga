@@ -1,5 +1,5 @@
-import type { Events } from "~/modules/event/type";
 import type { Route } from "./+types/events";
+import type { Events } from "~/modules/event/type";
 
 import { EventList } from "~/components/event/event-list";
 import {
@@ -29,8 +29,12 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export async function clientLoader() {
-  const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events`);
+  const apiBase =
+    import.meta.env.VITE_BACKEND_API_URL || "https://acaraga-api.onrender.com";
+
+  const res = await fetch(`${apiBase}/events`);
   const events: Events = await res.json();
+
   return { events };
 }
 

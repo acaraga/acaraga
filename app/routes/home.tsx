@@ -26,7 +26,6 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const { events } = loaderData || {};
   console.log("DATA DARI LIVE SERVER:", events);
 
-  // Ambil 3 event pertama untuk ditampilkan
   const featuredEvents = events?.slice(0, 3) || [];
 
   return (

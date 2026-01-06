@@ -1,11 +1,12 @@
 import { useState } from "react";
-import { Form, Link } from "react-router"; // Menggunakan Link untuk navigasi ke Login
+import { Form, Link, redirect } from "react-router"; // Menggunakan Link untuk navigasi ke Login
 import { Eye, EyeOff } from "lucide-react"; // Import ikon mata
 
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import type { Route } from "../+types/root";
+import type { RegisterResponse } from "~/modules/user/type";
 
 export function meta({}: Route.MetaArgs) {
   return [{ title: "Register - Acaraga" }];
@@ -115,4 +116,29 @@ export default function RegisterRoute({}: Route.ComponentProps) {
       </div>
     </div>
   );
+}
+
+export async function clientAction({ request }: Route.ClientActionArgs) {
+  const formData = await request.formData();
+
+  const registerBody = {
+    username: formData.get("username")?.toString(),
+    email: formData.get("email")?.toString(),
+    fullName: formData.get("fullName")?.toString(),
+    password: formData.get("password")?.toString(),
+  };
+
+  const response = await fetch(
+    `${import.meta.env.VITE_BACKEND_API_URL}/auth/register`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(registerBody),
+    }
+  );
+
+  const registerResponse: RegisterResponse = await response.json();
+  console.log(registerResponse);
+
+  return redirect("/login");
 }
