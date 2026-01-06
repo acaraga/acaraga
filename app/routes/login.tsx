@@ -18,53 +18,44 @@ export default function LoginRoute({}: Route.ComponentProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-4 font-sans">
-      <div className="w-full max-w-md bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
+    <div className="min-h-screen flex items-center justify-center p-4 font-sans">
+      <div className="w-full max-w-md rounded-lg borderp-8 shadow-sm">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Login</h1>
+          <h1 className="text-2xl font-bold">Login</h1>
           <p className="text-sm">Let's continue with Acaraga</p>
         </div>
 
         <Form method="POST" className="space-y-5">
           {/* Username */}
           <div className="space-y-2">
-            <Label htmlFor="username" className="text-gray-700">
-              User name
-            </Label>
+            <Label htmlFor="username">User name</Label>
             <Input
               id="username"
               type="text"
               name="username"
               placeholder="Enter your user name"
-              className="h-11 bg-white border-gray-300 placeholder:text-gray-300 focus-visible:ring-blue-500"
             />
           </div>
 
           {/* Email */}
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-gray-700">
-              Email
-            </Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
               name="email"
               placeholder="Enter your email"
-              className="h-11 bg-white border-gray-300 placeholder:text-gray-300 focus-visible:ring-blue-500"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-gray-700">
-              Password
-            </Label>
+            <Label htmlFor="password">Password</Label>
             <div className="relative">
               <Input
                 id="password"
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? "text" : "password"} // Ubah tipe input berdasarkan state
                 name="password"
                 placeholder="Enter your Password"
-                className="h-11 bg-white border-gray-300 placeholder:text-gray-300 focus-visible:ring-blue-500 pr-10"
               />
               <button
                 type="button"
@@ -80,17 +71,12 @@ export default function LoginRoute({}: Route.ComponentProps) {
             </div>
           </div>
 
-          <Button
-            type="submit"
-            className="w-full h-11 bg-[#1363DF] hover:bg-[#1152ba] text-white font-medium text-base mt-2"
-          >
-            Login
-          </Button>
+          <Button type="submit">Login</Button>
         </Form>
 
-        <p className="text-sm text-center text-gray-500 mt-6">
+        <p className="text-sm text-center mt-6">
           Don't have an account?{" "}
-          <Link to="/register" className="text-black font-bold hover:underline">
+          <Link to="/register" className="font-bold hover:underline">
             Register
           </Link>
         </p>
