@@ -1,12 +1,6 @@
-import type { Events } from "~/modules/event/type";
 import type { Route } from "./+types/events";
+import type { Events } from "~/modules/event/type";
 
-<<<<<<< HEAD
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "Events - Acaraga" },
-    { name: "description", content: "All events from Acaraga." },
-=======
 import { EventList } from "~/components/event/event-list";
 import {
   Pagination,
@@ -31,24 +25,16 @@ export function meta({}: Route.MetaArgs) {
       name: "description",
       content: "Explore sports events around you with Acaraga",
     },
->>>>>>> main
   ];
 }
 
 export async function clientLoader() {
-<<<<<<< HEAD
-  const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_API_URL}/events`
-  );
-  const events: Events = await response.json();
-  return events;
-}
+  const apiBase =
+    import.meta.env.VITE_BACKEND_API_URL || "https://acaraga-api.onrender.com";
 
-export default function Events() {
-  return <div className="p-4">See all events</div>;
-=======
-  const res = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/events`);
+  const res = await fetch(`${apiBase}/events`);
   const events: Events = await res.json();
+
   return { events };
 }
 
@@ -135,5 +121,4 @@ export default function Events({ loaderData }: Route.ComponentProps) {
       </section>
     </div>
   );
->>>>>>> main
 }
