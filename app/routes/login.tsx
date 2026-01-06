@@ -94,10 +94,8 @@ export default function LoginRoute({}: Route.ComponentProps) {
 
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const formData = await request.formData();
-
   const loginBody = {
     email: formData.get("email")?.toString(),
-
     password: formData.get("password")?.toString(),
   };
 
@@ -105,18 +103,22 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
     `${import.meta.env.VITE_BACKEND_API_URL}/auth/login`,
     {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(loginBody),
     }
   );
 
-  const loginResponse: LoginResponse = await response.text();
+  if (response.ok) {
+    const token = await response.text();
+    Cookies.set("token", token, { expires: 7, path: "/" });
 
-  console.log(loginResponse);
+    return redirect("/dashboard");
+  }
 
-  Cookies.set("token", loginResponse);
+  const errorData = await response
+    .json()
+    .catch(() => ({ message: "Login failed" }));
+  console.error("Login Error:", errorData);
 
-  return redirect("/dashboard");
+  return { error: errorData.message };
 }

@@ -29,7 +29,6 @@ export async function clientLoader() {
 }
 
 export default function DashboardRoute({ loaderData }: Route.ComponentProps) {
-  if (!loaderData) return null;
   const { meResponse } = loaderData;
 
   return (
