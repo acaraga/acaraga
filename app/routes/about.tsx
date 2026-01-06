@@ -1,3 +1,15 @@
+import type { Route } from "./+types/about";
+
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "About - Acaraga" },
+    {
+      name: "description",
+      content: "Explore sports events around you with Acaraga",
+    },
+  ];
+}
+
 export default function About() {
   return (
     <section className="max-w-5xl mx-auto px-6 py-16">

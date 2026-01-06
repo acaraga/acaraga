@@ -1,14 +1,33 @@
 export type Event = {
+  id: string;
   slug: string;
   name: string;
   imageUrl: string | null;
   description: string;
-  location: string;
-  categorySlug: string;
-  dateTimeStart: Date;
-  dateTimeEnd: Date;
+  dateTimeStart: string;
+  dateTimeEnd: string;
   registrationUrl: string;
   registrationFee: number;
+
+  category: Category | null;
+  location: Location | null;
+};
+
+export type Location = {
+  id: string;
+  slug: string;
+  name: string;
+  address: string;
+  city: string;
+  province: string;
+  latitude: number | null;
+  longitude: number | null;
+};
+
+export type Category = {
+  id: string;
+  slug: string;
+  name: string;
 };
 
 export type Events = Event[];
