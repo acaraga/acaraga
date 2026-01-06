@@ -25,10 +25,10 @@ export default function LoginRoute({}: Route.ComponentProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-4 font-sans">
-      <div className="w-full max-w-md bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
+    <div className="min-h-screen flex items-center justify-center p-4 font-sans">
+      <div className="w-full max-w-md rounded-lg border border-gray-200 p-8 shadow-sm">
         <div className="mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Login</h1>
+          <h1 className="text-2xl font-bold">Login</h1>
           <p className="text-sm">Let’s continue with Acaraga</p>
         </div>
 
@@ -83,7 +83,7 @@ export default function LoginRoute({}: Route.ComponentProps) {
 
         <p className="text-sm text-center text-gray-500 mt-6">
           Already have an Account ?{" "}
-          <Link to="/register" className="text-black font-bold hover:underline">
+          <Link to="/register" className="font-bold">
             Register
           </Link>
         </p>

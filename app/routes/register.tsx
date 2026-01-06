@@ -22,12 +22,12 @@ export default function RegisterRoute({}: Route.ComponentProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-4 font-sans">
-      <div className="w-full max-w-md bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
+    <div className="min-h-screen flex items-center justify-center  p-4 font-sans">
+      <div className="w-full max-w-md rounded-lg border border-gray-200 p-8 shadow-sm">
         {/* Header Section */}
         <div className="mb-8">
           <p className="text-gray-600 text-sm mb-1">Welcome!</p>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <h1 className="text-2xl font-bold">
             Register new account for Acaraga
           </h1>
         </div>
@@ -114,7 +114,7 @@ export default function RegisterRoute({}: Route.ComponentProps) {
         {/* Footer */}
         <p className="text-sm text-center text-gray-500 mt-6">
           Already have an Account ?{" "}
-          <Link to="/login" className="text-black font-bold hover:underline">
+          <Link to="/login" className="font-bold ">
             Login
           </Link>
         </p>
