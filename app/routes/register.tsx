@@ -17,12 +17,12 @@ export default function RegisterRoute({}: Route.ComponentProps) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-white p-4 font-sans">
-      <div className="w-full max-w-md bg-white rounded-lg border border-gray-200 p-8 shadow-sm">
+    <div className="min-h-screen flex items-center justify-center p-4 font-sans">
+      <div className="w-full max-w-md rounded-lg border p-8 shadow-sm">
         {/* Header Section */}
         <div className="mb-8">
-          <p className="text-gray-600 text-sm mb-1">Welcome!</p>
-          <h1 className="text-2xl font-bold text-gray-900">
+          <p className="text-sm mb-1">Welcome!</p>
+          <h1 className="text-2xl font-bold">
             Register new account for Acaraga
           </h1>
         </div>
@@ -30,9 +30,7 @@ export default function RegisterRoute({}: Route.ComponentProps) {
         <Form method="POST" className="space-y-5">
           {/* Username */}
           <div className="space-y-2">
-            <Label htmlFor="username" className="text-gray-700">
-              User name
-            </Label>
+            <Label htmlFor="username">User name</Label>
             <Input
               id="username"
               type="text"
@@ -43,9 +41,7 @@ export default function RegisterRoute({}: Route.ComponentProps) {
 
           {/* Email */}
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-gray-700">
-              Email
-            </Label>
+            <Label htmlFor="email">Email</Label>
             <Input
               id="email"
               type="email"
@@ -56,9 +52,7 @@ export default function RegisterRoute({}: Route.ComponentProps) {
 
           {/* Full Name */}
           <div className="space-y-2">
-            <Label htmlFor="full-name" className="text-gray-700">
-              Full Name
-            </Label>
+            <Label htmlFor="full-name">Full Name</Label>
             <Input
               id="full-name"
               type="text"
@@ -69,9 +63,7 @@ export default function RegisterRoute({}: Route.ComponentProps) {
 
           {/* Password dengan Toggle Visibility */}
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-gray-700">
-              Password
-            </Label>
+            <Label htmlFor="password">Password</Label>
             <div className="relative">
               <Input
                 id="password"

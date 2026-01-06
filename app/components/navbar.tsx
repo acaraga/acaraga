@@ -1,8 +1,14 @@
 import { Link } from "react-router";
+import { Search } from "lucide-react";
+
 import { Button } from "~/components/ui/button";
 import { ModeToggle } from "~/components/mode-toggle";
-import { Search } from "lucide-react";
-import { Input } from "./ui/input";
+import { Input } from "~/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "~/components/ui/input-group";
 
 export default function Navbar() {
   return (
@@ -30,7 +36,12 @@ export default function Navbar() {
 
           <div className="relative w-260px">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <Input placeholder="Search events..." />
+            <InputGroup>
+              <InputGroupInput placeholder="Search..." />
+              <InputGroupAddon>
+                <Search />
+              </InputGroupAddon>
+            </InputGroup>
           </div>
         </div>
 
