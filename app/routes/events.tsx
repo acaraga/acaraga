@@ -42,8 +42,8 @@ export default function Events({ loaderData }: Route.ComponentProps) {
   const { events } = loaderData;
 
   return (
-    <div className="w-full">
-      <section className="max-w-5xl mx-auto px-6 pt-16 text-center">
+    <div className="flex flex-col">
+      <section className="w-full max-w-7xl mx-auto px-6 pt-16 text-center">
         <h1 className="text-2xl md:text-3xl font-bold">
           Explore Sports Events
         </h1>
@@ -88,7 +88,7 @@ export default function Events({ loaderData }: Route.ComponentProps) {
         </div>
       </section>
 
-      <section className="max-w-5xl mx-auto px-6 mt-12">
+      <section className="w-full max-w-7xl mx-auto px-6 mt-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {events.map((event) => (
             <EventList key={event.id} event={event} />

@@ -29,8 +29,8 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   const featuredEvents = events?.slice(0, 3) || [];
 
   return (
-    <div className="w-full">
-      <section className="max-w-5xl mx-auto px-6 pt-16 flex flex-col md:flex-row items-center gap-10">
+    <div className="flex flex-col">
+      <section className="w-full max-w-7xl mx-auto px-6 pt-16 flex flex-col md:flex-row items-center gap-10">
         <div className="text-center md:text-left flex-1">
           <h2 className="text-2xl md:text-4xl font-bold leading-tight">
             Your Sport Experience <br /> Starts Here.
@@ -66,7 +66,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
         </div>
       </section>
 
-      <section className="max-w-5xl mx-auto px-6 mt-24 mb-24">
+      <section className="w-full max-w-7xl mx-auto px-6 mt-24 mb-24">
         <div className="flex justify-between items-center mb-8">
           <h3 className="text-xl font-semibold">Most Popular Events</h3>
           <Link
