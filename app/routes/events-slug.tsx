@@ -86,7 +86,8 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
               <p className="text-sm">{event.location?.address}</p>
 
               <div className="h-55 rounded-md border flex items-center justify-center text-sm">
-                Peta Google Maps
+                Peta Google Maps tempat lokasi acara event berlangsung via
+                google maps
               </div>
             </CardContent>
           </Card>
