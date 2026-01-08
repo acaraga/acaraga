@@ -19,7 +19,7 @@ export default function LoginRoute({}: Route.ComponentProps) {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 font-sans">
-      <div className="w-full max-w-md rounded-lg borderp-8 shadow-sm">
+      <div className="w-full max-w-md rounded-lg border p-8 shadow-sm">
         <div className="mb-8">
           <h1 className="text-2xl font-bold">Login</h1>
           <p className="text-sm">Let's continue with Acaraga</p>
