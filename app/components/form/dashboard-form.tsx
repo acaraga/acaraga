@@ -8,7 +8,7 @@ import {
   FieldSeparator,
 } from "~/components/ui/field";
 import type { User } from "~/modules/user/type";
-import { formatEventDate } from "~/lib/format";
+import { formatEventDateOnly } from "~/lib/format";
 
 interface DashboardFormProps {
   meResponse: User;
@@ -41,7 +41,9 @@ export function DashboardForm({
               <Field>
                 <FieldLabel>Created At</FieldLabel>
                 <FieldDescription>
-                  {formatEventDate(meResponse.createdAt as unknown as string)}
+                  {formatEventDateOnly(
+                    meResponse.createdAt as unknown as string
+                  )}
                 </FieldDescription>
               </Field>
             </FieldGroup>
@@ -58,7 +60,9 @@ export function DashboardForm({
               <Field>
                 <FieldLabel>Updated At</FieldLabel>
                 <FieldDescription>
-                  {formatEventDate(meResponse.updatedAt as unknown as string)}
+                  {formatEventDateOnly(
+                    meResponse.updatedAt as unknown as string
+                  )}
                 </FieldDescription>
               </Field>
             </FieldGroup>
