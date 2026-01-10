@@ -1,7 +1,7 @@
 import { MapPin } from "lucide-react";
 import { Card, CardContent, CardFooter } from "~/components/ui/card";
 import type { Event } from "~/modules/event/type";
-import { formatEventDate, formatPrice } from "~/lib/format";
+import { formatEventDateOnly, formatPrice } from "~/lib/format";
 
 interface EventListProps {
   event: Event;
@@ -18,7 +18,7 @@ export function EventList({ event }: EventListProps) {
 
       <CardContent className="pt-4 space-y-2">
         <p className="text-xs text-muted-foreground">
-          {formatEventDate(event.dateTimeStart)}
+          {formatEventDateOnly(event.dateTimeStart)}
         </p>
 
         <h2 className="font-bold text-lg leading-tight line-clamp-2">
