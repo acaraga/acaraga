@@ -7,6 +7,7 @@ import { Button } from "~/components/ui/button";
 import { CalendarIcon, MapPinIcon, TagIcon } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
 import { formatEventDateRange, formatPrice } from "~/lib/format";
+import EventMap from "~/components/detail-event/map-box";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   return [
@@ -84,12 +85,21 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
           <Card>
             <CardContent className="p-6 space-y-3">
               <h2 className="font-semibold text-lg">Rute & Lokasi</h2>
-              <p className="text-sm">{event.location?.address}</p>
 
-              <div className="h-55 rounded-md border flex items-center justify-center text-sm">
-                Peta Google Maps tempat lokasi acara event berlangsung via
-                google maps
-              </div>
+              <p className="text-sm text-muted-foreground">
+                {event.location?.address ?? "Lokasi belum tersedia"}
+              </p>
+
+              {event.location?.latitude != null &&
+              event.location?.longitude != null ? (
+                <div className="h-70 rounded-md border overflow-hidden">
+                  <EventMap location={event.location} />
+                </div>
+              ) : (
+                <div className="h-70 rounded-md border flex items-center justify-center text-sm text-muted-foreground">
+                  Peta belum tersedia
+                </div>
+              )}
             </CardContent>
           </Card>
         </div>
