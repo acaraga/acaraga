@@ -6,8 +6,7 @@ import { Button } from "~/components/ui/button";
 
 import { CalendarIcon, MapPinIcon, TagIcon } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
-
-import { formatEventDate, formatPrice } from "~/lib/format";
+import { formatEventDateRange, formatPrice } from "~/lib/format";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   return [
@@ -54,7 +53,9 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
             <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
                 <CalendarIcon className="h-4 w-4" />
-                <span>{formatEventDate(event.dateTimeStart)}</span>
+                <span>
+                  {formatEventDateRange(event.dateTimeStart, event.dateTimeEnd)}
+                </span>
               </div>
 
               <div className="flex items-center gap-2">
