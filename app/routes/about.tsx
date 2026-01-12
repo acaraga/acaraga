@@ -33,7 +33,7 @@ export default function About() {
           <li>Ammar Ismail Khocan</li>
           <li>Akhirudin Salasa</li>
           <li>Endi Suwandi</li>
-          <li>Arif Purnomo</li>
+          <li> Purnomo Arif</li>
         </ul>
       </p>
     </section>
