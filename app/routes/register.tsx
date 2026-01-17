@@ -90,9 +90,9 @@ export default function RegisterRoute({}: Route.ComponentProps) {
         </Form>
 
         {/* Footer */}
-        <p className="text-sm text-center text-gray-500 mt-6">
+        <p className="text-sm text-center mt-6">
           Already have an Account ?{" "}
-          <Link to="/login" className="text-black font-bold hover:underline">
+          <Link to="/login" className="font-bold hover:underline">
             Login
           </Link>
         </p>
