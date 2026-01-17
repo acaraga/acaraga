@@ -26,17 +26,6 @@ export default function LoginRoute({}: Route.ComponentProps) {
         </div>
 
         <Form method="POST" className="space-y-5">
-          {/* Username */}
-          <div className="space-y-2">
-            <Label htmlFor="username">User name</Label>
-            <Input
-              id="username"
-              type="text"
-              name="username"
-              placeholder="Enter your user name"
-            />
-          </div>
-
           {/* Email */}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
