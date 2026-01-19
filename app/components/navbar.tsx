@@ -45,11 +45,14 @@ export default function Navbar() {
       if (!isLoggedIn || !userToken) return;
 
       try {
-        const response = await fetch("http://localhost:3000/auth/me", {
-          headers: {
-            Authorization: `Bearer ${userToken}`,
-          },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_API_URL}/auth/me`,
+          {
+            headers: {
+              Authorization: `Bearer ${userToken}`,
+            },
+          }
+        );
 
         if (response.ok) {
           const result = await response.json();

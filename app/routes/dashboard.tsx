@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
 
+import { useState, useEffect } from "react";
 import type { Route } from "./+types/dashboard";
 import { redirect } from "react-router";
 import type { User, MeResponse } from "~/modules/user/type";
@@ -30,6 +31,37 @@ export async function clientLoader() {
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
   const { meResponse } = loaderData;
+
+  const [myEvents, setMyEvents] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMyEvents = async () => {
+      const token = Cookies.get("token");
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_API_URL}/my-events`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const result = await response.json();
+        if (response.ok) {
+          setMyEvents(result.data);
+          setTotal(result.total);
+        }
+      } catch (error) {
+        console.error("Failed to fetch events:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMyEvents();
+  }, []);
 
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center justify-center p-6 md:p-10">
