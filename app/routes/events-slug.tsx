@@ -1,3 +1,7 @@
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import Cookies from "js-cookie";
+
 import type { Event } from "~/modules/event/type";
 import type { Route } from "./+types/events-slug";
 
@@ -22,7 +26,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const slug = params.slug;
   const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_API_URL}/events/${slug}`
+    `${import.meta.env.VITE_BACKEND_API_URL}/events/${slug}`,
   );
 
   if (!response.ok) {
@@ -35,6 +39,47 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
 export default function EventDetail({ loaderData }: Route.ComponentProps) {
   const { event } = loaderData;
+
+  const navigate = useNavigate();
+  const [joining, setJoining] = useState(false);
+
+  const handleJoinEvent = async () => {
+    const token = Cookies.get("token");
+
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      setJoining(true);
+
+      const res = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/join-event`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            eventId: event.id,
+          }),
+        },
+      );
+
+      if (!res.ok) {
+        const error = await res.json();
+        throw new Error(error.message || "Gagal join event");
+      }
+
+      navigate("/dashboard");
+    } catch (err) {
+      alert((err as Error).message);
+    } finally {
+      setJoining(false);
+    }
+  };
 
   return (
     <section className="mx-auto max-w-7xl px-6 py-10 sm:py-12">
@@ -132,8 +177,10 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
               <Button
                 variant="outline"
                 className="h-12 w-full text-base font-medium"
+                onClick={handleJoinEvent}
+                disabled={joining}
               >
-                Join Event
+                {joining ? "Joining..." : "Join Event"}
               </Button>
 
               <div className="border-t pt-4">
