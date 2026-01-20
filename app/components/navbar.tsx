@@ -22,12 +22,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "~/components/ui/dropdown-menu";
-import { useId, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router";
 
 export default function Navbar() {
-  const id = useId();
-
   const navigate = useNavigate();
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -37,7 +35,7 @@ export default function Navbar() {
   const isLoggedIn = userToken !== undefined;
 
   const [user, setUser] = useState<{ username: string; email: string } | null>(
-    null
+    null,
   );
 
   useEffect(() => {
@@ -51,7 +49,7 @@ export default function Navbar() {
             headers: {
               Authorization: `Bearer ${userToken}`,
             },
-          }
+          },
         );
 
         if (response.ok) {
