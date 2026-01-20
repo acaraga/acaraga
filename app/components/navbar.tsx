@@ -73,7 +73,6 @@ export default function Navbar() {
 
   const handleLogout = () => {
     Cookies.remove("token");
-    const success = alert("You have been logged out.");
     navigate("/");
   };
 
