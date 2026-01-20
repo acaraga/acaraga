@@ -1,4 +1,5 @@
 export type Event = {
+  joinedUsers: any;
   id: string;
   slug: string;
   name: string;

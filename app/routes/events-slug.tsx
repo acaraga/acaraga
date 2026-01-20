@@ -8,7 +8,7 @@ import type { Route } from "./+types/events-slug";
 
 import { Card, CardContent } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
-import { CalendarIcon, MapPinIcon, TagIcon } from "lucide-react";
+import { CalendarIcon, MapPinIcon, TagIcon, UsersIcon } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
 import { formatEventDateRange, formatPrice } from "~/lib/format";
 import { EventMapBox } from "~/components/detail-event/map-box";
@@ -26,7 +26,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const slug = params.slug;
   const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_API_URL}/events/${slug}`,
+    `${import.meta.env.VITE_BACKEND_API_URL}/events/${slug}`
   );
 
   if (!response.ok) {
@@ -63,7 +63,7 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ eventId: event.id }),
-        },
+        }
       );
 
       if (!response.ok) {
@@ -180,6 +180,70 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
               >
                 {isJoining ? "Joining..." : "Join Event"}
               </Button>
+
+              <Card>
+                <CardContent className="p-6 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h2 className="font-semibold text-lg flex items-center gap-2">
+                      <UsersIcon className="h-5 w-5 text-lime-600" />
+                      Joined Users
+                    </h2>
+                    <span className="text-sm font-medium bg-lime-100 text-lime-700 px-2 py-1 rounded-full">
+                      {event.joinedUsers?.length || 0} People
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    {event.joinedUsers && event.joinedUsers.length > 0 ? (
+                      <div className="flex flex-col gap-3">
+                        {event.joinedUsers.slice(0, 5).map((user: any) => (
+                          <div
+                            key={user.id}
+                            className="flex items-center gap-3"
+                          >
+                            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center overflow-hidden border">
+                              {user.avatarUrl ? (
+                                <img
+                                  src={user.avatarUrl}
+                                  alt={user.name}
+                                  className="h-full w-full object-cover"
+                                />
+                              ) : (
+                                <span className="text-xs font-bold text-muted-foreground">
+                                  {user.name?.charAt(0).toUpperCase()}
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex flex-col">
+                              <p className="text-sm font-medium leading-none">
+                                {user.name}
+                              </p>
+                              <p className="text-xs text-muted-foreground">
+                                Joined recently
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+
+                        {event.joinedUsers.length > 5 && (
+                          <p className="text-xs text-center text-muted-foreground pt-2 border-t">
+                            + {event.joinedUsers.length - 5} more users joined
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <div className="text-center py-4">
+                        <p className="text-sm text-muted-foreground">
+                          No one has joined yet.
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Be the first to join!
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
 
               <div className="border-t pt-4">
                 <p className="mb-3 text-center text-sm font-medium">
