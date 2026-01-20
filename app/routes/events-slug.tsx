@@ -1,17 +1,17 @@
+import Cookies from "js-cookie";
+
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import Cookies from "js-cookie";
 
 import type { Event } from "~/modules/event/type";
 import type { Route } from "./+types/events-slug";
 
 import { Card, CardContent } from "~/components/ui/card";
 import { Button } from "~/components/ui/button";
-
 import { CalendarIcon, MapPinIcon, TagIcon } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
 import { formatEventDateRange, formatPrice } from "~/lib/format";
-import EventMap from "~/components/detail-event/map-box";
+import { EventMapBox } from "~/components/detail-event/map-box";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   return [
@@ -41,9 +41,9 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
   const { event } = loaderData;
 
   const navigate = useNavigate();
-  const [joining, setJoining] = useState(false);
+  const [isJoining, setIsJoining] = useState(false);
 
-  const handleJoinEvent = async () => {
+  const joinEvent = async () => {
     const token = Cookies.get("token");
 
     if (!token) {
@@ -52,9 +52,9 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
     }
 
     try {
-      setJoining(true);
+      setIsJoining(true);
 
-      const res = await fetch(
+      const response = await fetch(
         `${import.meta.env.VITE_BACKEND_API_URL}/join-event`,
         {
           method: "POST",
@@ -62,22 +62,20 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            eventId: event.id,
-          }),
+          body: JSON.stringify({ eventId: event.id }),
         },
       );
 
-      if (!res.ok) {
-        const error = await res.json();
-        throw new Error(error.message || "Gagal join event");
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.message || "Failed to join event");
       }
 
       navigate("/dashboard");
-    } catch (err) {
-      alert((err as Error).message);
+    } catch (error) {
+      alert((error as Error).message);
     } finally {
-      setJoining(false);
+      setIsJoining(false);
     }
   };
 
@@ -120,7 +118,7 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
 
           <Card>
             <CardContent className="space-y-3 p-6">
-              <h2 className="text-lg font-semibold">Tentang Event</h2>
+              <h2 className="text-lg font-semibold">About Event</h2>
               <p className="leading-relaxed text-muted-foreground">
                 {event.description}
               </p>
@@ -129,7 +127,7 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
 
           <Card>
             <CardContent className="p-6 space-y-3">
-              <h2 className="font-semibold text-lg">Rute & Lokasi</h2>
+              <h2 className="font-semibold text-lg">Route & Location</h2>
 
               <p className="text-sm text-muted-foreground">
                 {event.location?.address ?? "Lokasi belum tersedia"}
@@ -138,11 +136,11 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
               {event.location?.latitude != null &&
               event.location?.longitude != null ? (
                 <div className="h-70 rounded-md border overflow-hidden">
-                  <EventMap location={event.location} />
+                  <EventMapBox location={event.location} />
                 </div>
               ) : (
                 <div className="h-70 rounded-md border flex items-center justify-center text-sm text-muted-foreground">
-                  Peta belum tersedia
+                  Map is not available yet
                 </div>
               )}
             </CardContent>
@@ -177,10 +175,10 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
               <Button
                 variant="outline"
                 className="h-12 w-full text-base font-medium"
-                onClick={handleJoinEvent}
-                disabled={joining}
+                onClick={joinEvent}
+                disabled={isJoining}
               >
-                {joining ? "Joining..." : "Join Event"}
+                {isJoining ? "Joining..." : "Join Event"}
               </Button>
 
               <div className="border-t pt-4">
