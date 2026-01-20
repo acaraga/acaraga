@@ -10,7 +10,7 @@ type EventMapProps = {
   location: Location;
 };
 
-export default function EventMap({ location }: EventMapProps) {
+export function EventMapBox({ location }: EventMapProps) {
   const mapContainerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
