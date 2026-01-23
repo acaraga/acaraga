@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import type { User } from "~/modules/user/type";
 import { formatEventDateOnly } from "~/lib/format";
 import { useEffect, useState } from "react";
+import { MapPin } from "lucide-react";
 
 interface MyEventsListsProps {
   meResponse: User;
@@ -53,17 +54,47 @@ export function MyEventsLists({
           You haven't joined any events yet.
         </Card>
       ) : (
-        <div className="flex flex-col gap-1">
+        <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
           {myEvents.data.map((item) => (
-            <Card key={item.id} className="flex flex-col">
+            <Card
+              key={item.id}
+              className="pt-0 overflow-hidden border border-border/60 hover:shadow-sm transition-shadow"
+            >
+              <img
+                src={item.event.imageUrl ?? "No image available"}
+                alt={item.event.name}
+                className="w-full h-full object-contain"
+              />
               <CardHeader>
-                <CardTitle className="text-xl">
-                  {item.event.name}
-                  <p className="text-sm text-muted-foreground mb-2">
-                    📍 {item.event.location} Joined:{" "}
-                    {formatEventDateOnly(item.joinedAt)}
+                <CardContent className="space-y-2">
+                  <p className="text-xs text-muted-foreground">
+                    <strong>Event Start :</strong>{" "}
+                    {formatEventDateOnly(item.event.dateTimeStart)}
                   </p>
-                </CardTitle>
+
+                  <a
+                    href={`/events/${item.event.slug}`}
+                    className="font-bold text-lg leading-tight line-clamp-2 transition-colors hover:text-blue-600"
+                  >
+                    {item.event.name}
+                  </a>
+
+                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                    <MapPin size={14} />
+                    <span className="truncate">
+                      {item.event.location
+                        ? `${item.event.location.name}, ${item.event.location.city}`
+                        : "-"}
+                    </span>
+                  </div>
+                </CardContent>
+                <div className="flex flex-col gap-1 mt-2">
+                  <div className="flex flex-col border-t pt-2 mt-1 gap-1">
+                    <p className="text-xs text-muted-foreground italic">
+                      Joined on : {formatEventDateOnly(item.joinedAt)}
+                    </p>
+                  </div>
+                </div>
               </CardHeader>
             </Card>
           ))}
