@@ -65,7 +65,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="bg-muted flex min-h-svh flex-col items-center p-6 md:p-8">
-      <div className="w-full max-w-sm md:max-w-4xl">
+      <div className="w-full max-w-sm md:max-w-7xl">
         <DashboardForm meResponse={meResponse} />
       </div>
     </div>
