@@ -5,6 +5,7 @@ export type Event = {
   name: string;
   imageUrl: string | null;
   description: string;
+  facilities: string;
   dateTimeStart: string;
   dateTimeEnd: string;
   registrationUrl: string;
@@ -12,6 +13,10 @@ export type Event = {
 
   category: Category | null;
   location: Location | null;
+
+  joined?: {
+    total: number;
+  };
 };
 
 export type Location = {

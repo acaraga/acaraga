@@ -12,6 +12,7 @@ import { CalendarIcon, MapPinIcon, TagIcon, UsersIcon } from "lucide-react";
 import { FaWhatsapp, FaInstagram, FaFacebook } from "react-icons/fa";
 import { formatEventDateRange, formatPrice } from "~/lib/format";
 import { EventMapBox } from "~/components/detail-event/map-box";
+import { Badge } from "~/components/ui/badge";
 
 export function meta({ loaderData }: Route.MetaArgs) {
   return [
@@ -26,7 +27,7 @@ export function meta({ loaderData }: Route.MetaArgs) {
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const slug = params.slug;
   const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_API_URL}/events/${slug}`
+    `${import.meta.env.VITE_BACKEND_API_URL}/events/${slug}`,
   );
 
   if (!response.ok) {
@@ -63,7 +64,7 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ eventId: event.id }),
-        }
+        },
       );
 
       if (!response.ok) {
@@ -92,7 +93,9 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
           </div>
 
           <div className="space-y-3">
-            <h1 className="text-2xl font-bold sm:text-3xl">{event.name}</h1>
+            <h1 className="text-4xl font-extrabold leading-tight">
+              {event.name}
+            </h1>
 
             <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
               <div className="flex items-center gap-2">
@@ -117,32 +120,52 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
           </div>
 
           <Card>
-            <CardContent className="space-y-3 p-6">
-              <h2 className="text-lg font-semibold">About Event</h2>
-              <p className="leading-relaxed text-muted-foreground">
-                {event.description}
-              </p>
-            </CardContent>
-          </Card>
+            <CardContent className="p-6 space-y-10">
+              <section className="space-y-3">
+                <h2 className="text-3xl font-semibold">About Event</h2>
+                <p className="leading-relaxed text-base text-muted-foreground">
+                  {event.description}
+                </p>
+              </section>
 
-          <Card>
-            <CardContent className="p-6 space-y-3">
-              <h2 className="font-semibold text-lg">Route & Location</h2>
+              <div className="border-t" />
 
-              <p className="text-sm text-muted-foreground">
-                {event.location?.address ?? "Lokasi belum tersedia"}
-              </p>
+              {event.facilities && (
+                <section className="space-y-3">
+                  <h2 className="text-3xl font-semibold">What’s included</h2>
 
-              {event.location?.latitude != null &&
-              event.location?.longitude != null ? (
-                <div className="h-70 rounded-md border overflow-hidden">
-                  <EventMapBox location={event.location} />
-                </div>
-              ) : (
-                <div className="h-70 rounded-md border flex items-center justify-center text-sm text-muted-foreground">
-                  Map is not available yet
-                </div>
+                  <ul className="list-disc pl-5 space-y-2 text-base text-muted-foreground">
+                    {event.facilities
+                      .split("\n")
+                      .map((line) => line.replace("-", "").trim())
+                      .filter(Boolean)
+                      .map((item, idx) => (
+                        <li key={idx}>{item}</li>
+                      ))}
+                  </ul>
+                </section>
               )}
+
+              <div className="border-t" />
+
+              <section className="space-y-3">
+                <h2 className="text-3xl font-semibold">Route & Location</h2>
+
+                <p className="text-base text-muted-foreground">
+                  {event.location?.address ?? "Lokasi belum tersedia"}
+                </p>
+
+                {event.location?.latitude != null &&
+                event.location?.longitude != null ? (
+                  <div className="h-70 rounded-md border overflow-hidden">
+                    <EventMapBox location={event.location} />
+                  </div>
+                ) : (
+                  <div className="h-70 rounded-md border flex items-center justify-center text-sm text-muted-foreground">
+                    Map is not available yet
+                  </div>
+                )}
+              </section>
             </CardContent>
           </Card>
         </div>
@@ -188,59 +211,10 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
                       <UsersIcon className="h-5 w-5 text-lime-600" />
                       Joined Users
                     </h2>
-                    <span className="text-sm font-medium bg-lime-100 text-lime-700 px-2 py-1 rounded-full">
-                      {event.joinedUsers?.length || 0} People
-                    </span>
-                  </div>
 
-                  <div className="space-y-3">
-                    {event.joinedUsers && event.joinedUsers.length > 0 ? (
-                      <div className="flex flex-col gap-3">
-                        {event.joinedUsers.slice(0, 5).map((user: any) => (
-                          <div
-                            key={user.id}
-                            className="flex items-center gap-3"
-                          >
-                            <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center overflow-hidden border">
-                              {user.avatarUrl ? (
-                                <img
-                                  src={user.avatarUrl}
-                                  alt={user.name}
-                                  className="h-full w-full object-cover"
-                                />
-                              ) : (
-                                <span className="text-xs font-bold text-muted-foreground">
-                                  {user.name?.charAt(0).toUpperCase()}
-                                </span>
-                              )}
-                            </div>
-                            <div className="flex flex-col">
-                              <p className="text-sm font-medium leading-none">
-                                {user.name}
-                              </p>
-                              <p className="text-xs text-muted-foreground">
-                                Joined recently
-                              </p>
-                            </div>
-                          </div>
-                        ))}
-
-                        {event.joinedUsers.length > 5 && (
-                          <p className="text-xs text-center text-muted-foreground pt-2 border-t">
-                            + {event.joinedUsers.length - 5} more users joined
-                          </p>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="text-center py-4">
-                        <p className="text-sm text-muted-foreground">
-                          No one has joined yet.
-                        </p>
-                        <p className="text-xs text-muted-foreground">
-                          Be the first to join!
-                        </p>
-                      </div>
-                    )}
+                    <Badge variant="secondary">
+                      {event.joined?.total ?? 0} People
+                    </Badge>
                   </div>
                 </CardContent>
               </Card>
