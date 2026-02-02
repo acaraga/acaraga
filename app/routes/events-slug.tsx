@@ -132,7 +132,9 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
 
               {event.facilities && (
                 <section className="space-y-3">
-                  <h2 className="text-3xl font-semibold">What’s included</h2>
+                  <h2 className="text-3xl font-semibold">
+                    Race Pack & Participant Benefits
+                  </h2>
 
                   <ul className="list-disc pl-5 space-y-2 text-base text-muted-foreground">
                     {event.facilities
