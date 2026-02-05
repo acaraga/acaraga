@@ -65,9 +65,13 @@ export function DashboardForm({ meResponse }: { meResponse: User }) {
               <span className="text-lg text-white/80">You have finished</span>
             </div>
 
-            <span className="text-7xl font-bold text-lime-400">
-              {eventsData.total}
-            </span>
+            {isLoading ? (
+              <div className="h-18 w-18 animate-pulse" />
+            ) : (
+              <span className="text-7xl font-bold text-lime-400">
+                {eventsData.total}
+              </span>
+            )}
           </div>
         </Card>
       </div>
