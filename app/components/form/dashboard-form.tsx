@@ -1,38 +1,84 @@
+import { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import { Card } from "~/components/ui/card";
-
-import type { User } from "~/modules/user/type";
-import { useState } from "react";
 import { MyEventsLists } from "./my-events-lists";
+import type { User } from "~/modules/user/type";
 
-interface DashboardFormProps {
-  meResponse: User;
-}
-
-export function DashboardForm({ meResponse }: DashboardFormProps) {
-  const [myEvents, setMyEvents] = useState<{ total: number; data: any[] }>({
+export function DashboardForm({ meResponse }: { meResponse: User }) {
+  const [eventsData, setEventsData] = useState<{ total: number; data: any[] }>({
     total: 0,
     data: [],
   });
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchMyEvents = async () => {
+      const token = Cookies.get("token");
+      if (!token) return;
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_API_URL}/my-events`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        );
+        if (response.ok) {
+          const result = await response.json();
+          setEventsData(result);
+        }
+      } catch (error) {
+        console.error("Failed to fetch events:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchMyEvents();
+  }, []);
 
   return (
-    <div>
-      <section className="grid grid-cols-2 sm:grid-cols-2 gap-4 mb-4">
-        <Card className="p-4 md:p-6">
-          <div className="flex flex-col ">
-            <h1 className="text-2xl font-bold">{meResponse.fullName}</h1>
-            <p className="text-muted-foreground">{meResponse.username}</p>
-            <p className="text-gray-300">{meResponse.email}</p>
-          </div>
-        </Card>
-        <Card className="p-4 md:p-6 bg-gray-800">
-          <div className="flex flex-col ">
-            <h1 className="text-2xl text-white font-bold">Events Journey</h1>
-            <p className="text-muted-foreground">You have joined :</p>
-          </div>
-        </Card>
-      </section>
+    <div className="mx-auto max-w-7xl px-6 py-5">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <Card className="md:col-span-2 rounded-xl border border-border bg-background">
+          <div className="flex h-full flex-col justify-center px-6 py-5 gap-0.5">
+            <h1 className="text-4xl font-bold tracking-tight text-foreground">
+              {meResponse.fullName}
+            </h1>
 
-      <MyEventsLists meResponse={meResponse} />
+            <p className="text-lg text-muted-foreground">
+              {meResponse.username}
+            </p>
+
+            <p className="text-sm text-muted-foreground/70">
+              {meResponse.email}
+            </p>
+          </div>
+        </Card>
+
+        <Card className="rounded-xl border-none bg-[#0F172A]">
+          <div className="flex h-full items-center justify-between px-6 py-5">
+            <div className="flex flex-col">
+              <span className="text-lg uppercase tracking-wider text-white/50">
+                Event Journey
+              </span>
+              <span className="text-lg text-white/80">You have finished</span>
+            </div>
+
+            <span className="text-7xl font-bold text-lime-400">
+              {eventsData.total}
+            </span>
+          </div>
+        </Card>
+      </div>
+
+      {isLoading ? (
+        <div className="text-center py-16 text-muted-foreground">
+          Loading your events...
+        </div>
+      ) : (
+        <MyEventsLists events={eventsData.data} />
+      )}
     </div>
   );
 }

@@ -17,7 +17,7 @@ export async function clientLoader() {
 
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_API_URL}/auth/me`,
-    { headers: { Authorization: `Bearer ${token}` } }
+    { headers: { Authorization: `Bearer ${token}` } },
   );
 
   if (!response.ok) {
@@ -46,7 +46,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
             headers: {
               Authorization: `Bearer ${token}`,
             },
-          }
+          },
         );
         const result = await response.json();
         if (response.ok) {
@@ -64,7 +64,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
   }, []);
 
   return (
-    <div className="bg-muted flex min-h-svh flex-col items-center p-6 md:p-8">
+    <div className="flex min-h-svh flex-col items-center p-6 md:p-8">
       <div className="w-full max-w-sm md:max-w-7xl">
         <DashboardForm meResponse={meResponse} />
       </div>

@@ -1,102 +1,93 @@
-import Cookies from "js-cookie";
-
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import type { User } from "~/modules/user/type";
+import { Card, CardContent, CardHeader } from "~/components/ui/card";
 import { formatEventDateOnly } from "~/lib/format";
-import { useEffect, useState } from "react";
-import { MapPin } from "lucide-react";
+import { MapPin, CalendarDays, Users } from "lucide-react";
+import { Link } from "react-router";
 
-interface MyEventsListsProps {
-  meResponse: User;
+interface MyEventsLists {
+  events: any[];
 }
 
-export function MyEventsLists({
-  className,
-  meResponse,
-}: React.ComponentProps<"div"> & MyEventsListsProps) {
-  const [myEvents, setMyEvents] = useState<{ total: number; data: any[] }>({
-    total: 0,
-    data: [],
-  });
-
-  useEffect(() => {
-    const fetchMyEvents = async () => {
-      const token = Cookies.get("token");
-      if (!token) return;
-
-      try {
-        const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_API_URL}/my-events`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        if (response.ok) {
-          const result = await response.json();
-          setMyEvents(result);
-        }
-      } catch (error) {
-        console.error("Failed to fetch events:", error);
-      }
-    };
-
-    fetchMyEvents();
-  }, []);
-
+export function MyEventsLists({ events }: MyEventsLists) {
   return (
-    <div className="space-y-4 mt-4">
+    <div className="space-y-6 mt-8">
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">My Events ({myEvents.total})</h2>
+        <div>
+          <h2 className="text-2xl font-bold tracking-tight">My Events</h2>
+        </div>
       </div>
 
-      {myEvents.data.length === 0 ? (
-        <Card className="p-8 text-center text-muted-foreground">
-          You haven't joined any events yet.
+      {events.length === 0 ? (
+        <Card className="border-dashed">
+          <CardContent className="flex flex-col items-center justify-center py-16">
+            <div className="rounded-full bg-muted p-6 mb-4">
+              <CalendarDays className="h-10 w-10 text-muted-foreground" />
+            </div>
+            <h3 className="font-semibold text-lg mb-2">No events yet</h3>
+            <p className="text-muted-foreground text-sm mb-6 text-center max-w-sm">
+              You haven't joined any events yet. Explore upcoming events and
+              start networking!
+            </p>
+            <Link
+              to="/events"
+              className="inline-flex items-center justify-center rounded-md bg-primary px-6 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+            >
+              Browse Events
+            </Link>
+          </CardContent>
         </Card>
       ) : (
-        <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4">
-          {myEvents.data.map((item) => (
-            <Card
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {events.map((item) => (
+            <Link
               key={item.id}
-              className="pt-0 overflow-hidden border border-border/60 hover:shadow-sm transition-shadow"
+              to={`/events/${item.event.slug}`}
+              className="group"
             >
-              <img
-                src={item.event.imageUrl ?? "No image available"}
-                alt={item.event.name}
-                className="w-full h-full object-contain"
-              />
-              <CardHeader>
-                <CardContent className="space-y-2">
-                  <p className="text-xs text-muted-foreground">
-                    <strong>Event Start :</strong>{" "}
-                    {formatEventDateOnly(item.event.dateTimeStart)}
-                  </p>
+              <Card className="overflow-hidden border border-border/60  hover:shadow-lg transition-all duration-300 h-full p-0">
+                <div className="relative w-full h-48 overflow-hidden bg-linear-to-br from-primary/5 to-primary/10">
+                  <img
+                    src={item.event.imageUrl}
+                    alt={item.event.name}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  />
+                </div>
 
-                  <a
-                    href={`/events/${item.event.slug}`}
-                    className="font-bold text-lg leading-tight line-clamp-2 transition-colors hover:text-blue-600"
-                  >
+                <CardHeader className="p-4 space-y-3">
+                  <h3 className="font-bold text-xl leading-tight group-hover:text-primary transition-colors line-clamp-2">
                     {item.event.name}
-                  </a>
+                  </h3>
 
-                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                    <MapPin size={14} />
-                    <span className="truncate">
-                      {item.event.location
-                        ? `${item.event.location.name}, ${item.event.location.city}`
-                        : "-"}
-                    </span>
+                  <div className="space-y-2">
+                    <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <CalendarDays className="h-4 w-4 mt-0.5 shrink-0" />
+                      <span className="line-clamp-1">
+                        {formatEventDateOnly(item.event.dateTimeStart)}
+                      </span>
+                    </div>
+
+                    <div className="flex items-start gap-2 text-sm text-muted-foreground">
+                      <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
+                      <span className="line-clamp-1">
+                        {item.event.location?.city || "Online Event"}
+                      </span>
+                    </div>
+
+                    {item.event.participantsCount && (
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Users className="h-4 w-4 shrink-0" />
+                        <span>{item.event.participantsCount} participants</span>
+                      </div>
+                    )}
                   </div>
-                </CardContent>
-                <div className="flex flex-col gap-1 mt-2">
-                  <div className="flex flex-col border-t pt-2 mt-1 gap-1">
-                    <p className="text-xs text-muted-foreground italic">
-                      Joined on : {formatEventDateOnly(item.joinedAt)}
+
+                  <div className="pt-3 border-t">
+                    <p className="text-xs text-muted-foreground">
+                      Joined {formatEventDateOnly(item.joinedAt)}
                     </p>
                   </div>
-                </div>
-              </CardHeader>
-            </Card>
+                </CardHeader>
+              </Card>
+            </Link>
           ))}
         </div>
       )}
