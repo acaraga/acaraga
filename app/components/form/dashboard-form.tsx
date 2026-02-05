@@ -38,33 +38,26 @@ export function DashboardForm({ meResponse }: { meResponse: User }) {
   }, []);
 
   return (
-    <div className="mx-auto max-w-7xl px-5 py-5">
-      {/* ===== TOP DASHBOARD CARDS (SAMA PERSIS GAMBAR) ===== */}
+    <div className="mx-auto max-w-7xl px-6 py-5">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {/* Profile Card */}
         <Card className="md:col-span-2 rounded-xl border border-border bg-background">
           <div className="flex h-full flex-col justify-center px-6 py-5 gap-0.5">
-            {/* Full Name */}
             <h1 className="text-4xl font-bold tracking-tight text-foreground">
               {meResponse.fullName}
             </h1>
 
-            {/* Username */}
             <p className="text-lg text-muted-foreground">
               {meResponse.username}
             </p>
 
-            {/* Email */}
             <p className="text-sm text-muted-foreground/70">
               {meResponse.email}
             </p>
           </div>
         </Card>
 
-        {/* Event Journey Card */}
-        <Card className="rounded-xl border-none bg-[#0f172a]">
+        <Card className="rounded-xl border-none bg-[#0F172A]">
           <div className="flex h-full items-center justify-between px-6 py-5">
-            {/* Left text */}
             <div className="flex flex-col">
               <span className="text-lg uppercase tracking-wider text-white/50">
                 Event Journey
@@ -72,7 +65,6 @@ export function DashboardForm({ meResponse }: { meResponse: User }) {
               <span className="text-lg text-white/80">You have finished</span>
             </div>
 
-            {/* Right number */}
             <span className="text-7xl font-bold text-lime-400">
               {eventsData.total}
             </span>
@@ -85,7 +77,7 @@ export function DashboardForm({ meResponse }: { meResponse: User }) {
           Loading your events...
         </div>
       ) : (
-        <MyEventsLists events={eventsData.data} total={eventsData.total} />
+        <MyEventsLists events={eventsData.data} />
       )}
     </div>
   );
