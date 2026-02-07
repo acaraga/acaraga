@@ -39,7 +39,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
 
         <div className="flex justify-center md:justify-end flex-1">
           <img
-            src="/assets/hero.svg"
+            src="/assets/marathon.png"
             alt="Hero Image"
             className="w-360px md:w-480px h-auto"
           />
