@@ -26,27 +26,39 @@ export function meta({ loaderData }: Route.MetaArgs) {
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const slug = params.slug;
+  const token = Cookies.get("token");
+
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_API_URL}/events/${slug}`,
   );
+  if (!response.ok) throw new Response("Event not found", { status: 404 });
+  const event: Event = await response.json();
 
-  if (!response.ok) {
-    throw new Response("Event not found", { status: 404 });
+  let isJoined = false;
+  if (token) {
+    const checkRes = await fetch(
+      `${import.meta.env.VITE_BACKEND_API_URL}/join-event/check/${event.id}`,
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+    if (checkRes.ok) {
+      const data = await checkRes.json();
+      isJoined = data.isJoined;
+    }
   }
 
-  const event: Event = await response.json();
-  return { event };
+  return { event, isJoined };
 }
 
 export default function EventDetail({ loaderData }: Route.ComponentProps) {
-  const { event } = loaderData;
+  const { event, isJoined: initialJoined } = loaderData;
 
   const navigate = useNavigate();
   const [isJoining, setIsJoining] = useState(false);
 
+  const [hasJoined, setHasJoined] = useState(initialJoined);
+
   const joinEvent = async () => {
     const token = Cookies.get("token");
-
     if (!token) {
       navigate("/login");
       return;
@@ -54,7 +66,6 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
 
     try {
       setIsJoining(true);
-
       const response = await fetch(
         `${import.meta.env.VITE_BACKEND_API_URL}/join-event`,
         {
@@ -72,6 +83,8 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
         throw new Error(result.message || "Failed to join event");
       }
 
+      setHasJoined(true);
+      alert("Successfully joined event!");
       navigate("/dashboard");
     } catch (error) {
       alert((error as Error).message);
@@ -198,12 +211,16 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
               </Button>
 
               <Button
-                variant="outline"
+                variant={hasJoined ? "secondary" : "outline"}
                 className="h-12 w-full text-base font-medium"
                 onClick={joinEvent}
-                disabled={isJoining}
+                disabled={isJoining || hasJoined}
               >
-                {isJoining ? "Joining..." : "Join Event"}
+                {isJoining
+                  ? "Joining..."
+                  : hasJoined
+                    ? "You've Joined"
+                    : "Join Event"}
               </Button>
 
               <Card>
