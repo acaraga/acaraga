@@ -73,12 +73,11 @@ export default function LoginRoute({}: Route.ComponentProps) {
     </div>
   );
 }
+
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const formData = await request.formData();
-
   const loginBody = {
     email: formData.get("email")?.toString(),
-
     password: formData.get("password")?.toString(),
   };
 
@@ -88,13 +87,22 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(loginBody),
-    }
+    },
   );
 
-  const loginResponse: LoginResponse = await response.text();
-  console.log(loginResponse);
+  if (!response.ok) return { error: "Login failed" };
 
-  Cookies.set("token", loginResponse);
+  // Ambil datanya sebagai any dulu baru cast ke LoginResponse
+  // untuk memaksa TS berhenti menganggap ini string
+  const rawData = await response.json();
+  const result = rawData as LoginResponse;
+
+  // Sekarang result.token pasti terbaca
+  Cookies.set("token", result.token);
+
+  if (result.user.role === "ORGANIZER") {
+    return redirect("/dashboard/organizer");
+  }
 
   return redirect("/dashboard");
 }
