@@ -26,7 +26,6 @@ export default function LoginRoute({}: Route.ComponentProps) {
         </div>
 
         <Form method="POST" className="space-y-5">
-          {/* Email */}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -42,7 +41,7 @@ export default function LoginRoute({}: Route.ComponentProps) {
             <div className="relative">
               <Input
                 id="password"
-                type={showPassword ? "text" : "password"} // Ubah tipe input berdasarkan state
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter your Password"
               />
@@ -92,12 +91,9 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
 
   if (!response.ok) return { error: "Login failed" };
 
-  // Ambil datanya sebagai any dulu baru cast ke LoginResponse
-  // untuk memaksa TS berhenti menganggap ini string
   const rawData = await response.json();
   const result = rawData as LoginResponse;
 
-  // Sekarang result.token pasti terbaca
   Cookies.set("token", result.token);
 
   if (result.user.role === "ORGANIZER") {

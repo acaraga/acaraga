@@ -2,8 +2,6 @@ import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 import { redirect } from "react-router";
 import type { Route } from "./+types/dashboard-organizer";
-import { DashboardForm } from "~/components/form/dashboard-form";
-import { MyEventsLists } from "~/components/form/my-events-lists";
 import { Card } from "~/components/ui/card";
 
 export async function clientLoader() {
