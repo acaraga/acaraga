@@ -26,7 +26,6 @@ export default function LoginRoute({}: Route.ComponentProps) {
         </div>
 
         <Form method="POST" className="space-y-5">
-          {/* Email */}
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
@@ -42,7 +41,7 @@ export default function LoginRoute({}: Route.ComponentProps) {
             <div className="relative">
               <Input
                 id="password"
-                type={showPassword ? "text" : "password"} // Ubah tipe input berdasarkan state
+                type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Enter your Password"
               />
@@ -73,12 +72,11 @@ export default function LoginRoute({}: Route.ComponentProps) {
     </div>
   );
 }
+
 export async function clientAction({ request }: Route.ClientActionArgs) {
   const formData = await request.formData();
-
   const loginBody = {
     email: formData.get("email")?.toString(),
-
     password: formData.get("password")?.toString(),
   };
 
@@ -88,13 +86,19 @@ export async function clientAction({ request }: Route.ClientActionArgs) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(loginBody),
-    }
+    },
   );
 
-  const loginResponse: LoginResponse = await response.text();
-  console.log(loginResponse);
+  if (!response.ok) return { error: "Login failed" };
 
-  Cookies.set("token", loginResponse);
+  const rawData = await response.json();
+  const result = rawData as LoginResponse;
+
+  Cookies.set("token", result.token);
+
+  if (result.user.role === "ORGANIZER") {
+    return redirect("/dashboard/organizer");
+  }
 
   return redirect("/dashboard");
 }
