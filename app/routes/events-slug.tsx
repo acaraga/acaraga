@@ -35,6 +35,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const event: Event = await response.json();
 
   let isJoined = false;
+  let isOwner = false;  
   if (token) {
     const checkRes = await fetch(
       `${import.meta.env.VITE_BACKEND_API_URL}/join-event/check/${event.id}`,
@@ -43,14 +44,15 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
     if (checkRes.ok) {
       const data = await checkRes.json();
       isJoined = data.isJoined;
+      isOwner = data.isOwner;
     }
   }
 
-  return { event, isJoined };
+  return { event, isJoined, isOwner };
 }
 
 export default function EventDetail({ loaderData }: Route.ComponentProps) {
-  const { event, isJoined: initialJoined } = loaderData;
+  const { event, isJoined: initialJoined, isOwner } = loaderData;
 
   const navigate = useNavigate();
   const [isJoining, setIsJoining] = useState(false);
@@ -210,18 +212,38 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
                 </a>
               </Button>
 
-              <Button
-                variant={hasJoined ? "secondary" : "outline"}
-                className="h-12 w-full text-base font-medium"
-                onClick={joinEvent}
-                disabled={isJoining || hasJoined}
-              >
-                {isJoining
-                  ? "Joining..."
-                  : hasJoined
-                    ? "You've Joined"
-                    : "Join Event"}
-              </Button>
+              {isOwner ? (
+
+
+<Button disabled className="h-12 w-full text-base">Ini Event Lu Sendiri, Bro!</Button>
+
+) : (
+
+<Button
+
+variant={hasJoined ? "secondary" : "outline"}
+
+className="h-12 w-full text-base font-medium"
+
+onClick={joinEvent}
+
+disabled={isJoining || hasJoined}
+
+>
+
+{isJoining
+
+? "Joining..."
+
+: hasJoined
+
+? "You've Joined"
+
+: "Join Event"}
+
+</Button>
+
+)}
 
               <Card>
                 <CardContent className="p-6 space-y-4">
