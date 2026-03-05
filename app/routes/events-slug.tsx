@@ -83,18 +83,28 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
       if (!response.ok) {
         const result = await response.json();
         throw new Error(result.message || "Failed to join event");
-      }
+      };
+
+
+      // 1. Tangkap balasan dari Backend
+      const successData = await response.json(); 
 
       setHasJoined(true);
       alert("Successfully joined event!");
-      navigate("/dashboard");
+
+      // 2. Logika Smart Redirect
+      if (successData.role === "ADMIN" || successData.role === "ORGANIZER") {
+        navigate("/dashboard-organizer"); 
+      } else {
+        navigate("/dashboard");
+      }
+
     } catch (error) {
       alert((error as Error).message);
     } finally {
       setIsJoining(false);
     }
-  };
-
+  }; 
   return (
     <section className="mx-auto max-w-7xl px-6 py-10 sm:py-12">
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">

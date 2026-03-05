@@ -18,7 +18,7 @@ export async function clientLoader() {
   if (!response.ok) return redirect("/login");
   const meResponse = await response.json();
 
-  if (meResponse.role !== "ORGANIZER") return redirect("/dashboard");
+  if (meResponse.role !== "ORGANIZER") return redirect("/dashboard-organizer");
 
   return { meResponse };
 }
