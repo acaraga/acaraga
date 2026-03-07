@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
@@ -28,6 +27,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const slug = params.slug;
   const token = Cookies.get("token");
 
+  // 1. Ambil detail event
   const response = await fetch(
     `${import.meta.env.VITE_BACKEND_API_URL}/events/${slug}`,
   );
@@ -35,27 +35,45 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   const event: Event = await response.json();
 
   let isJoined = false;
+  let userRole = null; // Inisialisasi role
+
   if (token) {
-    const checkRes = await fetch(
-      `${import.meta.env.VITE_BACKEND_API_URL}/join-event/check/${event.id}`,
-      { headers: { Authorization: `Bearer ${token}` } },
-    );
-    if (checkRes.ok) {
-      const data = await checkRes.json();
-      isJoined = data.isJoined;
+    try {
+      // 2. Ambil data user terbaru langsung dari API (Paling Aman untuk cek Role)
+      const meRes = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/auth/me`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (meRes.ok) {
+        const userData = await meRes.json();
+        userRole = userData.role;
+      }
+
+      // 3. Cek status pendaftaran (Hanya jika event.id tersedia)
+      const checkRes = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/join-event/check/${event.id}`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+      if (checkRes.ok) {
+        const data = await checkRes.json();
+        isJoined = data.isJoined;
+      }
+    } catch (error) {
+      console.error("Auth/Join check failed silently");
     }
   }
 
-  return { event, isJoined };
+  return { event, isJoined, userRole };
 }
 
 export default function EventDetail({ loaderData }: Route.ComponentProps) {
-  const { event, isJoined: initialJoined } = loaderData;
+  const { event, isJoined: initialJoined, userRole } = loaderData;
 
   const navigate = useNavigate();
   const [isJoining, setIsJoining] = useState(false);
-
   const [hasJoined, setHasJoined] = useState(initialJoined);
+
+  // Variabel saklar untuk Business Logic: Cek apakah user adalah Organizer
+  const isOrganizer = userRole === "ORGANIZER";
 
   const joinEvent = async () => {
     const token = Cookies.get("token");
@@ -80,6 +98,7 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
 
       if (!response.ok) {
         const result = await response.json();
+        // Backend akan melempar 403 jika role bukan USER
         throw new Error(result.message || "Failed to join event");
       }
 
@@ -148,7 +167,6 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
                   <h2 className="text-3xl font-semibold">
                     Race Pack & Participant Benefits
                   </h2>
-
                   <ul className="list-disc pl-5 space-y-2 text-base text-muted-foreground">
                     {event.facilities
                       .split("\n")
@@ -165,7 +183,6 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
 
               <section className="space-y-3">
                 <h2 className="text-3xl font-semibold">Route & Location</h2>
-
                 <p className="text-base text-muted-foreground">
                   {event.location?.address ?? "Lokasi belum tersedia"}
                 </p>
@@ -197,31 +214,42 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
                 </p>
               </div>
 
-              <Button
-                asChild
-                className="h-12 w-full bg-lime-400 text-base font-semibold text-black hover:bg-lime-500"
-              >
-                <a
-                  href={event.registrationUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Register Now
-                </a>
-              </Button>
+              {/* LOGIKA FINAL: Sembunyikan tombol jika role adalah ORGANIZER */}
+              {!isOrganizer ? (
+                <>
+                  <Button
+                    asChild
+                    className="h-12 w-full bg-lime-400 text-base font-semibold text-black hover:bg-lime-500"
+                  >
+                    <a
+                      href={event.registrationUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Register Now
+                    </a>
+                  </Button>
 
-              <Button
-                variant={hasJoined ? "secondary" : "outline"}
-                className="h-12 w-full text-base font-medium"
-                onClick={joinEvent}
-                disabled={isJoining || hasJoined}
-              >
-                {isJoining
-                  ? "Joining..."
-                  : hasJoined
-                    ? "You've Joined"
-                    : "Join Event"}
-              </Button>
+                  <Button
+                    variant={hasJoined ? "secondary" : "outline"}
+                    className="h-12 w-full text-base font-medium"
+                    onClick={joinEvent}
+                    disabled={isJoining || hasJoined}
+                  >
+                    {isJoining
+                      ? "Joining..."
+                      : hasJoined
+                        ? "You've Joined"
+                        : "Join Event"}
+                  </Button>
+                </>
+              ) : (
+                // UI Khusus Organizer
+                <div className="rounded-lg bg-amber-50 p-4 text-center text-sm text-amber-700 border border-amber-200">
+                  ℹ️ Anda login sebagai <b>Organizer</b>. <br/>
+                  Fitur pendaftaran hanya tersedia untuk Peserta.
+                </div>
+              )}
 
               <Card>
                 <CardContent className="p-6 space-y-4">
@@ -230,7 +258,6 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
                       <UsersIcon className="h-5 w-5 text-lime-600" />
                       Joined Users
                     </h2>
-
                     <Badge variant="secondary">
                       {event.joined?.total ?? 0} People
                     </Badge>
@@ -242,29 +269,14 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
                 <p className="mb-3 text-center text-sm font-medium">
                   Share this event
                 </p>
-
                 <div className="flex justify-center gap-4">
-                  <a
-                    href="#"
-                    className="rounded-full border p-2 transition hover:bg-muted"
-                    aria-label="Share on WhatsApp"
-                  >
+                  <a href="#" className="rounded-full border p-2 transition hover:bg-muted">
                     <FaWhatsapp className="text-xl" />
                   </a>
-
-                  <a
-                    href="#"
-                    className="rounded-full border p-2 transition hover:bg-muted"
-                    aria-label="Share on Instagram"
-                  >
+                  <a href="#" className="rounded-full border p-2 transition hover:bg-muted">
                     <FaInstagram className="text-xl" />
                   </a>
-
-                  <a
-                    href="#"
-                    className="rounded-full border p-2 transition hover:bg-muted"
-                    aria-label="Share on Facebook"
-                  >
+                  <a href="#" className="rounded-full border p-2 transition hover:bg-muted">
                     <FaFacebook className="text-xl" />
                   </a>
                 </div>
