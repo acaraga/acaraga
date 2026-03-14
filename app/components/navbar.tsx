@@ -71,7 +71,7 @@ export default function Navbar() {
 
   return (
     <nav className="w-full bg-background border-b shadow-sm sticky top-0 z-50">
-      <div className="mx-auto max-w-7xl flex items-center justify-between py-4 px-6">
+      <div className="mx-auto max-w-7xl relative flex items-center justify-between py-4 px-6">
         <Link to="/" className="flex items-center gap-2 shrink-0">
           <img src="/assets/logo.svg" alt="Logo" className="h-10 w-auto" />
           <span className="text-2xl font-extrabold tracking-tight">
@@ -79,7 +79,7 @@ export default function Navbar() {
           </span>
         </Link>
 
-        <div className="hidden md:flex items-center gap-10">
+        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2">
           <ul className="flex h-9 items-center gap-8 font-medium">
             <li>
               <Link to="/">Home</Link>
