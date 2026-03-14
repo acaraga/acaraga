@@ -1,19 +1,10 @@
 import Cookies from "js-cookie";
 
-import {
-  Search,
-  CircleUserRoundIcon,
-  LogOutIcon,
-  LogInIcon,
-} from "lucide-react";
+import { CircleUserRoundIcon, LogOutIcon, LogInIcon } from "lucide-react";
 
 import { Button } from "~/components/ui/button";
 import { ModeToggle } from "~/components/mode-toggle";
-import {
-  InputGroup,
-  InputGroupAddon,
-  InputGroupInput,
-} from "~/components/ui/input-group";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -34,9 +25,11 @@ export default function Navbar() {
 
   const isLoggedIn = userToken !== undefined;
 
-  const [user, setUser] = useState<{ username: string; email: string; role : string } | null>(
-    null,
-  );
+  const [user, setUser] = useState<{
+    username: string;
+    email: string;
+    role: string;
+  } | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -98,16 +91,6 @@ export default function Navbar() {
               <Link to="/about">About</Link>
             </li>
           </ul>
-
-          <div className="relative w-260px">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <InputGroup>
-              <InputGroupInput placeholder="Search..." />
-              <InputGroupAddon>
-                <Search />
-              </InputGroupAddon>
-            </InputGroup>
-          </div>
         </div>
 
         <div className="flex items-center gap-3 shrink-0">
@@ -150,20 +133,20 @@ export default function Navbar() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-            
 
-<DropdownMenuItem asChild className="cursor-pointer">
-  {/* Logic: Jika role ORGANIZER, arahkan ke /organizer/dashboard, selain itu ke /dashboard */}
-  <Link 
-    to={user?.role === "ORGANIZER" ? "/dashboard/organizer" : "/dashboard"} 
-    className="flex items-center gap-2"
-  >
-    <LogInIcon size={16} />
-    Dashboard
-  </Link>
-</DropdownMenuItem>
-
-
+                <DropdownMenuItem asChild className="cursor-pointer">
+                  <Link
+                    to={
+                      user?.role === "ORGANIZER"
+                        ? "/dashboard/organizer"
+                        : "/dashboard"
+                    }
+                    className="flex items-center gap-2"
+                  >
+                    <LogInIcon size={16} />
+                    Dashboard
+                  </Link>
+                </DropdownMenuItem>
 
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
