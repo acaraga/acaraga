@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Route } from "./+types/events";
 import type { Events } from "~/modules/event/type";
 
@@ -21,10 +22,7 @@ import {
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "Events - Acaraga" },
-    {
-      name: "description",
-      content: "Explore sports events around you with Acaraga",
-    },
+    { name: "description", content: "Explore sports events around you" },
   ];
 }
 
@@ -38,8 +36,18 @@ export async function clientLoader() {
   return { events };
 }
 
+const ITEMS_PER_PAGE = 6;
+
 export default function Events({ loaderData }: Route.ComponentProps) {
   const { events } = loaderData;
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const totalPages = Math.ceil(events.length / ITEMS_PER_PAGE);
+
+  const start = (currentPage - 1) * ITEMS_PER_PAGE;
+  const end = start + ITEMS_PER_PAGE;
+  const paginatedEvents = events.slice(start, end);
 
   return (
     <div className="flex flex-col">
@@ -90,35 +98,57 @@ export default function Events({ loaderData }: Route.ComponentProps) {
 
       <section className="w-full max-w-7xl mx-auto px-6 mt-12">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {events.map((event) => (
+          {paginatedEvents.map((event) => (
             <EventList key={event.id} event={event} />
           ))}
         </div>
       </section>
 
-      <section className="flex justify-center mt-10 mb-24">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious />
-            </PaginationItem>
+      {totalPages > 1 && (
+        <section className="flex justify-center mt-10 mb-24">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() => setCurrentPage((p) => p - 1)}
+                  aria-disabled={currentPage === 1}
+                  className={
+                    currentPage === 1
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
+                />
+              </PaginationItem>
 
-            <PaginationItem>
-              <PaginationLink isActive>1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink>2</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink>3</PaginationLink>
-            </PaginationItem>
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (page) => (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      isActive={page === currentPage}
+                      onClick={() => setCurrentPage(page)}
+                      className="cursor-pointer"
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ),
+              )}
 
-            <PaginationItem>
-              <PaginationNext />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </section>
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() => setCurrentPage((p) => p + 1)}
+                  aria-disabled={currentPage === totalPages}
+                  className={
+                    currentPage === totalPages
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </section>
+      )}
     </div>
   );
 }
