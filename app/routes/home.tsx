@@ -6,7 +6,7 @@ import { Link } from "react-router";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "Acaraga - Find Sports Events" },
+    { title: "Acaraga" },
     {
       name: "description",
       content: "Discover and track events easily with Acaraga.",
