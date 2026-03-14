@@ -34,7 +34,7 @@ export default function Navbar() {
 
   const isLoggedIn = userToken !== undefined;
 
-  const [user, setUser] = useState<{ username: string; email: string } | null>(
+  const [user, setUser] = useState<{ username: string; email: string; role : string } | null>(
     null,
   );
 
@@ -150,12 +150,21 @@ export default function Navbar() {
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild className="cursor-pointer">
-                  <a href="/dashboard" className="flex items-center gap-2">
-                    <LogInIcon size={16} />
-                    Dashboard
-                  </a>
-                </DropdownMenuItem>
+            
+
+<DropdownMenuItem asChild className="cursor-pointer">
+  {/* Logic: Jika role ORGANIZER, arahkan ke /organizer/dashboard, selain itu ke /dashboard */}
+  <Link 
+    to={user?.role === "ORGANIZER" ? "/dashboard/organizer" : "/dashboard"} 
+    className="flex items-center gap-2"
+  >
+    <LogInIcon size={16} />
+    Dashboard
+  </Link>
+</DropdownMenuItem>
+
+
+
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={handleLogout}
