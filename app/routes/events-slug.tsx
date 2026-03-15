@@ -40,9 +40,12 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   if (token) {
     try {
       // 2. Ambil data user terbaru langsung dari API (Paling Aman untuk cek Role)
-      const meRes = await fetch(`${import.meta.env.VITE_BACKEND_API_URL}/auth/me`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const meRes = await fetch(
+        `${import.meta.env.VITE_BACKEND_API_URL}/auth/me`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      );
       if (meRes.ok) {
         const userData = await meRes.json();
         userRole = userData.role;
@@ -246,8 +249,8 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
               ) : (
                 // UI Khusus Organizer
                 <div className="rounded-lg bg-amber-50 p-4 text-center text-sm text-amber-700 border border-amber-200">
-                  ℹ️ Anda login sebagai <b>Organizer</b>. <br/>
-                  Fitur pendaftaran hanya tersedia untuk Peserta.
+                  ℹ️ You are logged in as an <b>Organizer</b>. <br />
+                  Registration is restricted to Participants.
                 </div>
               )}
 
@@ -270,13 +273,22 @@ export default function EventDetail({ loaderData }: Route.ComponentProps) {
                   Share this event
                 </p>
                 <div className="flex justify-center gap-4">
-                  <a href="#" className="rounded-full border p-2 transition hover:bg-muted">
+                  <a
+                    href="#"
+                    className="rounded-full border p-2 transition hover:bg-muted"
+                  >
                     <FaWhatsapp className="text-xl" />
                   </a>
-                  <a href="#" className="rounded-full border p-2 transition hover:bg-muted">
+                  <a
+                    href="#"
+                    className="rounded-full border p-2 transition hover:bg-muted"
+                  >
                     <FaInstagram className="text-xl" />
                   </a>
-                  <a href="#" className="rounded-full border p-2 transition hover:bg-muted">
+                  <a
+                    href="#"
+                    className="rounded-full border p-2 transition hover:bg-muted"
+                  >
                     <FaFacebook className="text-xl" />
                   </a>
                 </div>
